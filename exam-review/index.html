@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>江汉区期中模拟卷 · 错题分析与练习</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c2430;
+      --muted: #5b6675;
+      --paper: #f7f3ea;
+      --panel: #fffdf8;
+      --line: #d9d0c0;
+      --accent: #0f6a5a;
+      --accent-soft: #d8efe9;
+      --warn: #8a4b12;
+      --warn-soft: #f3e2cf;
+      --bad: #8f2f2f;
+      --bad-soft: #f3d6d6;
+      --good: #1f6b3a;
+      --good-soft: #d8eddf;
+      --shadow: 0 1px 0 rgba(28, 36, 48, 0.04);
+      --serif: "Noto Serif SC", "Songti SC", serif;
+      --sans: "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, #e7f2ee 0%, transparent 55%),
+        radial-gradient(900px 420px at 100% 0%, #f1e6d4 0%, transparent 50%),
+        var(--paper);
+      line-height: 1.65;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 18px 64px; }
+    header.hero {
+      padding: 18px 0 8px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 22px;
+    }
+    .brand {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin: 0 0 8px;
+    }
+    .sub { color: var(--muted); margin: 0; max-width: 42rem; }
+    nav.tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0 8px;
+    }
+    button, .chip {
+      font: inherit;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      border-radius: 10px;
+      padding: 8px 14px;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    button.primary, .chip.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    button.ghost { background: transparent; }
+    button:hover { border-color: var(--accent); }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin: 14px 0;
+      box-shadow: var(--shadow);
+    }
+    .panel h2, .panel h3 {
+      font-family: var(--serif);
+      margin: 0 0 10px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .stat {
+      background: var(--accent-soft);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .stat b { display: block; font-size: 1.35rem; font-family: var(--serif); }
+    .stat span { color: var(--muted); font-size: 0.9rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 500; }
+    .prio-high { color: var(--bad); font-weight: 600; }
+    .prio-mid { color: var(--warn); font-weight: 600; }
+    .q-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .box {
+      background: #f4efe6;
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .box.ok { background: #e5f3ea; }
+    .muted { color: var(--muted); }
+    .method {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .method span {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.88rem;
+    }
+    .callout {
+      border-left: 4px solid var(--warn);
+      background: var(--warn-soft);
+      padding: 10px 12px;
+      border-radius: 0 10px 10px 0;
+      margin: 8px 0 12px;
+    }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 14px; }
+    .practice-card { margin-bottom: 14px; }
+    .options { display: grid; gap: 8px; margin: 10px 0; }
+    .options button { text-align: left; }
+    input[type="text"] {
+      width: 100%;
+      font: inherit;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+    .result-ok { color: var(--good); font-weight: 600; }
+    .result-bad { color: var(--bad); font-weight: 600; }
+    .explain {
+      margin-top: 10px;
+      background: #eef6f3;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    @media (max-width: 720px) {
+      .stats, .grid2 { grid-template-columns: 1fr 1fr; }
+      table { font-size: 0.85rem; }
+    }
+    @media (max-width: 480px) {
+      .stats { grid-template-columns: 1fr; }
+    }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="brand">江汉区期中模拟卷 · 错题本</p>
+      <p class="sub">根据批改痕迹整理失分点、知识点反馈，并提供可即时批改的扩展练习。</p>
+      <nav class="tabs" id="tabs">
+        <button class="primary" data-tab="overview">总览反馈</button>
+        <button data-tab="review">错题精讲</button>
+        <button data-tab="practice">扩展练习</button>
+      </nav>
+    </header>
+
+    <section id="overview"></section>
+    <section id="review" hidden></section>
+    <section id="practice" hidden></section>
+
+    <footer>本地练习工具 · 作答仅保存在本浏览器会话中</footer>
+  </div>
+
+  <script>
+    const WRONG = [
+      {
+        id: "q5",
+        no: "第5题",
+        kind: "选择题",
+        topic: "反比例函数性质（增减性）",
+        stem: "反比例函数 y=-3/x，下列说法不正确的是？A. y随x增大而增大；B. 过(1,-3)；C. 位于二、四象限；D. 关于y=x对称。",
+        student: "D",
+        correct: "A",
+        miss: "把“在每个象限内递增”误当成“整体递增”，或误判对称性。",
+        feedback: [
+          "k=-3<0：图像在二、四象限；过(1,-3)；关于y=x与y=-x对称。",
+          "增减性必须限定区间：两支各自递增，但不能跨象限说整体递增。",
+          "选“不正确”时，先确认正确选项，剩下的才是答案。"
+        ],
+        method: ["看k定象限", "特殊点验证", "对称性固定结论", "增减性分区间"]
+      },
+      {
+        id: "q14",
+        no: "第14题",
+        kind: "填空题",
+        topic: "二次函数闭区间最值 + 分类讨论",
+        stem: "y=ax²+4ax+2 在 -4≤x≤1 有最大值5，求a。",
+        student: "只写出 3/5（漏解）",
+        correct: "a=-3/4 或 a=3/5",
+        miss: "只考虑开口向上端点最大，漏掉开口向下顶点最大。",
+        feedback: [
+          "配方 y=a(x+2)²-4a+2，对称轴 x=-2 在区间内。",
+          "a<0：最大值在顶点 ⇒ -4a+2=5 ⇒ a=-3/4。",
+          "a>0：最大值在更远端点 x=1 ⇒ 5a+2=5 ⇒ a=3/5。",
+          "两解都要写全，漏解常整题判错。"
+        ],
+        method: ["顶点式", "a>0/a<0分类", "顶点 vs 端点", "回代检验"]
+      },
+      {
+        id: "q15",
+        no: "第15题",
+        kind: "填空题",
+        topic: "反比例 k 的几何意义 + 面积比",
+        stem: "平行四边形ABCD顶点A在y=k/x(x>0)上，AE=2DE，△DCE面积为9，求k。",
+        student: "27",
+        correct: "54",
+        miss: "面积放缩少乘了2。",
+        feedback: [
+          "第一象限点与坐标轴围成的矩形面积为k。",
+          "AE=2DE 带来一次面积比例放大。",
+          "中间量27结合平行四边形关系后得到k=54。",
+          "检验：27→54 正好×2。"
+        ],
+        method: ["标点坐标", "面积比", "平行四边形关系"]
+      },
+      {
+        id: "q16",
+        no: "第16题",
+        kind: "填空题",
+        topic: "30°直角三角形 + 中点 + 旋转120°",
+        stem: "Rt△ABC中∠C=90°,∠B=30°，E为AD中点，EF⊥AD，EF绕E顺时针旋转120°得EG。BD=4,BF=6，求CG。",
+        student: "2√5",
+        correct: "6-2√3",
+        miss: "旋转后点G未精确计算，估成普通勾股型答案。",
+        feedback: [
+          "先用30°-60°-90°边比处理已知线段。",
+          "中点+垂线适合建系。",
+          "旋转120°用向量/坐标旋转，保持EG=EF。",
+          "结果含√3，不是纯勾股整数型。"
+        ],
+        method: ["建系", "旋转矩阵", "距离公式化简"]
+      },
+      {
+        id: "q22",
+        no: "第22题(2)②",
+        kind: "解答题",
+        topic: "利润问题：顶点最值",
+        stem: "宾馆利润模型中，房价多少时利润最大？",
+        student: "用解方程的根当“最大”",
+        correct: "m=170，房价350元（若m须为10的倍数，则340与360同最大）",
+        miss: "混淆“利润=8640”与“利润最大”。",
+        feedback: [
+          "W=(160+m)(50-m/10)=-m²/10+34m+8000。",
+          "最值用对称轴 m=170；定值才解方程。",
+          "最终答房价=180+m。",
+          "离散约束下比较m=160与180。"
+        ],
+        method: ["先建模", "最值→对称轴", "定值→方程", "回代房价"]
+      },
+      {
+        id: "q24",
+        no: "第24题(2)(3)",
+        kind: "解答题",
+        topic: "含参直线定点 + 抛物线综合",
+        stem: "y=kx-k-1 与 y=x²-2x-3 交于A,B。已会求定点；继续完成AG=AF与AC定点。",
+        student: "只完成(1) D(1,-1)；(2)(3)空白",
+        correct: "(1)D(1,-1)；后续用韦达与对称性推进",
+        miss: "定点会做，综合条件不敢下手。",
+        feedback: [
+          "y+1=k(x-1) ⇒ 定点(1,-1)已掌握。",
+          "联立后用韦达表示交点横坐标。",
+          "抛物线对称轴x=1，横弦关于它对称。",
+          "把几何条件翻译成坐标等式再求。"
+        ],
+        method: ["配方定点", "联立韦达", "几何条件坐标化", "再求新定点"]
+      }
+    ];
+
+    const PRACTICE = [
+      {
+        id: "p1", tag: "反比例性质", related: "第5题", type: "choice",
+        stem: "关于 y=2/x，下列说法错误的是？",
+        options: ["A. 图像在第一、三象限", "B. 在(0,+∞)上 y 随 x 增大而减小", "C. y 随 x 的增大而减小（不限制区间）", "D. 图像关于原点对称"],
+        answer: "C", accept: ["C"],
+        hint: "跨象限不能直接谈单调性。",
+        explain: "A、B、D正确。C未限定区间：x从-1到1时 y从-2增到2，故C错误。"
+      },
+      {
+        id: "p2", tag: "反比例性质", related: "第5题", type: "choice",
+        stem: "y=-5/x 在(-∞,0)上的单调性是？",
+        options: ["A. 增函数", "B. 减函数", "C. 先增后减", "D. 不能确定"],
+        answer: "A", accept: ["A"],
+        hint: "k<0时每一支都是增函数。",
+        explain: "k=-5<0，在(-∞,0)上递增。"
+      },
+      {
+        id: "p3", tag: "区间最值", related: "第14题", type: "blank",
+        stem: "y=ax²+4ax+2 在-4≤x≤1有最大值5，则a=？（两解用“或”）",
+        answer: "-3/4或3/5",
+        accept: ["-3/4或3/5", "3/5或-3/4", "-3/4,3/5", "3/5,-3/4", "a=-3/4或a=3/5", "a=3/5或a=-3/4"],
+        hint: "对称轴x=-2，按开口方向分类。",
+        explain: "a<0：顶点最大得a=-3/4；a>0：x=1处最大得a=3/5。"
+      },
+      {
+        id: "p4", tag: "区间最值", related: "第14题", type: "blank",
+        stem: "y=-x²+2x+m 在0≤x≤3最大值是5，则m=？",
+        answer: "4", accept: ["4", "m=4"],
+        hint: "开口向下，最大值在顶点。",
+        explain: "顶点(1,1+m)，1+m=5 ⇒ m=4。"
+      },
+      {
+        id: "p5", tag: "面积与k", related: "第15题", type: "blank",
+        stem: "点P在y=k/x(x>0)上，过P作坐标轴垂线围成矩形面积为12，则k=？",
+        answer: "12", accept: ["12", "k=12"],
+        hint: "第一象限矩形面积等于k。",
+        explain: "面积=t·(k/t)=k=12。"
+      },
+      {
+        id: "p6", tag: "面积与k", related: "第15题", type: "blank",
+        stem: "上述矩形面积的一半为9，则k=？",
+        answer: "18", accept: ["18", "k=18"],
+        hint: "三角形面积常为矩形一半。",
+        explain: "(1/2)k=9 ⇒ k=18。原题再经平行四边形比例到54。"
+      },
+      {
+        id: "p7", tag: "利润模型", related: "第22题", type: "blank",
+        stem: "W=-m²/10+34m+8000，使W最大的m是？",
+        answer: "170", accept: ["170", "m=170"],
+        hint: "对称轴 m=-b/(2a)。",
+        explain: "m=-34/(2·-1/10)=170。"
+      },
+      {
+        id: "p8", tag: "利润模型", related: "第22题", type: "blank",
+        stem: "原价180，提价170时利润最大，定价多少元？",
+        answer: "350", accept: ["350", "350元", "350 元"],
+        hint: "定价=原价+提价。",
+        explain: "180+170=350。"
+      },
+      {
+        id: "p9", tag: "直线定点", related: "第24题", type: "blank",
+        stem: "y=k(x-2)+3 恒过的定点？写成(x,y)",
+        answer: "(2,3)", accept: ["(2,3)", "（2，3）", "(2, 3)"],
+        hint: "令括号为0。",
+        explain: "定点(2,3)。"
+      },
+      {
+        id: "p10", tag: "直线定点", related: "第24题", type: "blank",
+        stem: "y=2kx-4k+1 的定点坐标？",
+        answer: "(2,1)", accept: ["(2,1)", "（2，1）", "(2, 1)"],
+        hint: "y-1=2k(x-2)。",
+        explain: "定点(2,1)。"
+      },
+      {
+        id: "p11", tag: "旋转初步", related: "第16题", type: "choice",
+        stem: "F绕E旋转180°得G，一定正确的是？",
+        options: ["A. EG=2EF", "B. E是FG中点且EG=EF", "C. ∠FEG=90°", "D. FG⊥EF"],
+        answer: "B", accept: ["B"],
+        hint: "180°旋转：等距且中心为中点。",
+        explain: "F、E、G共线，E为中点，EG=EF。"
+      },
+      {
+        id: "p12", tag: "综合选择", related: "易混对比", type: "choice",
+        stem: "哪个问题该用“求对称轴/顶点”，而不是解方程？",
+        options: ["A. 利润刚好8640元时的定价", "B. 利润最大时的定价", "C. 空出5间时的提价", "D. 单价200元时的利润"],
+        answer: "B", accept: ["B"],
+        hint: "最大/最小→顶点；等于某值→方程。",
+        explain: "B是最值；A是定值。这是第22题易混点。"
+      }
+    ];
+
+    const state = {
+      tab: "overview",
+      reviewId: "q14",
+      filter: "全部",
+      answers: {},
+      checked: {},
+      explain: {}
+    };
+
+    function norm(s) {
+      return String(s || "")
+        .replace(/\s+/g, "")
+        .replace(/／/g, "/")
+        .replace(/，/g, ",")
+        .replace(/（/g, "(")
+        .replace(/）/g, ")")
+        .toLowerCase();
+    }
+
+    function isCorrect(q, raw) {
+      const n = norm(raw);
+      if (!n) return false;
+      return [q.answer, ...(q.accept || [])].map(norm).includes(n);
+    }
+
+    function el(html) {
+      const t = document.createElement("template");
+      t.innerHTML = html.trim();
+      return t.content.firstElementChild;
+    }
+
+    function renderOverview() {
+      const root = document.getElementById("overview");
+      root.innerHTML = "";
+      root.appendChild(el(`
+        <div class="panel">
+          <h2>试卷速览</h2>
+          <p>江汉区期中模拟卷1 · 卷面约93分。客观题失分集中在第5、14、15、16题；解答题主要失分在第22题利润最值与第24题(2)(3)空白。</p>
+          <div class="stats">
+            <div class="stat"><b>7</b><span>明确失分点</span></div>
+            <div class="stat"><b>5</b><span>核心薄弱点</span></div>
+            <div class="stat"><b>12</b><span>扩展练习题</span></div>
+            <div class="stat"><b>分类讨论</b><span>最高优补强</span></div>
+          </div>
+        </div>
+      `));
+      const table = el(`
+        <div class="panel">
+          <h2>失分结构</h2>
+          <table>
+            <thead>
+              <tr><th>题号</th><th>知识点</th><th>你的作答</th><th>正确方向</th><th>优先级</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>5</td><td>反比例增减性</td><td>D</td><td>A</td><td class="prio-high">高</td></tr>
+              <tr><td>14</td><td>闭区间最值分类</td><td>漏解</td><td>-3/4 或 3/5</td><td class="prio-high">很高</td></tr>
+              <tr><td>15</td><td>k 与面积比</td><td>27</td><td>54</td><td class="prio-high">高</td></tr>
+              <tr><td>16</td><td>旋转求长</td><td>2√5</td><td>6-2√3</td><td class="prio-mid">中</td></tr>
+              <tr><td>22②</td><td>利润顶点最值</td><td>方程根当最值</td><td>m=170 → 350元</td><td class="prio-high">很高</td></tr>
+              <tr><td>24(2)(3)</td><td>定点进阶综合</td><td>空白</td><td>韦达+对称推进</td><td class="prio-high">很高</td></tr>
+            </tbody>
+          </table>
+        </div>
+      `);
+      root.appendChild(table);
+      root.appendChild(el(`
+        <div class="grid2">
+          <div class="panel">
+            <h3>已掌握</h3>
+            <p>配方/求根、等边旋转证明、抛物线求式、一次与反比例交点、直线定点第1问。</p>
+          </div>
+          <div class="panel">
+            <h3>补强顺序</h3>
+            <p>1) 区间最值分类<br/>2) 利润：方程 vs 顶点<br/>3) 反比例增减性表述<br/>4) 定点→韦达→几何条件<br/>5) 旋转坐标法</p>
+          </div>
+        </div>
+      `));
+    }
+
+    function renderReview() {
+      const root = document.getElementById("review");
+      root.innerHTML = "";
+      const nav = el(`<div class="q-nav"></div>`);
+      WRONG.forEach((w) => {
+        const b = el(`<button class="${w.id === state.reviewId ? "primary" : ""}">${w.no}</button>`);
+        b.onclick = () => { state.reviewId = w.id; renderReview(); };
+        nav.appendChild(b);
+      });
+      root.appendChild(nav);
+      const item = WRONG.find((w) => w.id === state.reviewId) || WRONG[0];
+      const card = el(`
+        <div class="panel">
+          <h2>${item.no} · ${item.topic}</h2>
+          <p class="muted">${item.kind}</p>
+          <div class="callout"><strong>题目：</strong>${item.stem}</div>
+          <div class="grid2">
+            <div class="box"><strong>你的作答</strong><div>${item.student}</div></div>
+            <div class="box ok"><strong>正确方向</strong><div>${item.correct}</div></div>
+          </div>
+          <h3 style="margin-top:14px">失误诊断</h3>
+          <p>${item.miss}</p>
+          <h3>可执行反馈</h3>
+          <ol>${item.feedback.map((f) => `<li>${f}</li>`).join("")}</ol>
+          <h3>方法卡</h3>
+          <div class="method">${item.method.map((m) => `<span>${m}</span>`).join("")}</div>
+        </div>
+      `);
+      root.appendChild(card);
+    }
+
+    function renderPractice() {
+      const root = document.getElementById("practice");
+      root.innerHTML = "";
+      const tags = ["全部", "反比例性质", "区间最值", "面积与k", "利润模型", "直线定点", "旋转初步", "综合选择"];
+      const list = state.filter === "全部" ? PRACTICE : PRACTICE.filter((q) => q.tag === state.filter);
+      const answered = PRACTICE.filter((q) => state.checked[q.id]);
+      const correctCount = answered.filter((q) => isCorrect(q, state.answers[q.id])).length;
+
+      const stats = el(`
+        <div class="stats" style="margin-bottom:12px">
+          <div class="stat"><b>${correctCount}/${answered.length}</b><span>已批改正确</span></div>
+          <div class="stat"><b>${list.length}</b><span>当前题量</span></div>
+          <div class="stat"><b>${answered.length ? Math.round(correctCount / answered.length * 100) + "%" : "—"}</b><span>正确率</span></div>
+          <div class="stat"><b>12</b><span>题库总量</span></div>
+        </div>
+      `);
+      root.appendChild(stats);
+
+      const filters = el(`<div class="filters"></div>`);
+      tags.forEach((t) => {
+        const b = el(`<button class="${state.filter === t ? "primary" : ""}">${t}</button>`);
+        b.onclick = () => { state.filter = t; renderPractice(); };
+        filters.appendChild(b);
+      });
+      const clear = el(`<button class="ghost">清空作答</button>`);
+      clear.onclick = () => {
+        state.answers = {};
+        state.checked = {};
+        state.explain = {};
+        renderPractice();
+      };
+      filters.appendChild(clear);
+      root.appendChild(filters);
+
+      list.forEach((q, idx) => {
+        const val = state.answers[q.id] || "";
+        const done = !!state.checked[q.id];
+        const ok = done && isCorrect(q, val);
+        const bad = done && !isCorrect(q, val);
+        const card = el(`<div class="panel practice-card"></div>`);
+        card.appendChild(el(`
+          <div>
+            <strong>练习 ${idx + 1}</strong>
+            <span class="muted"> · ${q.tag} · 对应${q.related}</span>
+            ${ok ? '<span class="result-ok"> 正确</span>' : ""}
+            ${bad ? '<span class="result-bad"> 再看一眼</span>' : ""}
+            <p style="margin:8px 0 0"><strong>${q.stem}</strong></p>
+          </div>
+        `));
+
+        if (q.type === "choice") {
+          const opts = el(`<div class="options"></div>`);
+          q.options.forEach((opt) => {
+            const letter = opt.trim()[0];
+            const b = el(`<button class="${norm(val) === norm(letter) ? "primary" : ""}">${opt}</button>`);
+            b.onclick = () => {
+              state.answers[q.id] = letter;
+              renderPractice();
+            };
+            opts.appendChild(b);
+          });
+          card.appendChild(opts);
+        } else {
+          const input = el(`<input type="text" placeholder="例如 -3/4或3/5 或 (2,1)" />`);
+          input.value = val;
+          input.oninput = (e) => { state.answers[q.id] = e.target.value; };
+          card.appendChild(input);
+        }
+
+        const row = el(`<div class="row"></div>`);
+        const submit = el(`<button class="primary">提交批改</button>`);
+        submit.onclick = () => {
+          if (q.type === "blank") {
+            const input = card.querySelector("input");
+            state.answers[q.id] = input ? input.value : state.answers[q.id];
+          }
+          state.checked[q.id] = true;
+          renderPractice();
+        };
+        const tip = el(`<button>${state.explain[q.id] ? "收起解析" : "看解析/提示"}</button>`);
+        tip.onclick = () => {
+          state.explain[q.id] = !state.explain[q.id];
+          renderPractice();
+        };
+        row.appendChild(submit);
+        row.appendChild(tip);
+        card.appendChild(row);
+
+        if (state.explain[q.id]) {
+          card.appendChild(el(`<div class="explain"><strong>${ok ? "解析" : "提示：" + q.hint}</strong><div>${q.explain}</div></div>`));
+        }
+        if (bad) {
+          card.appendChild(el(`<p class="muted">参考答案：${q.answer}</p>`));
+        }
+        root.appendChild(card);
+      });
+    }
+
+    function showTab(name) {
+      state.tab = name;
+      ["overview", "review", "practice"].forEach((id) => {
+        document.getElementById(id).hidden = id !== name;
+      });
+      document.querySelectorAll("#tabs button").forEach((b) => {
+        b.classList.toggle("primary", b.dataset.tab === name);
+      });
+      if (name === "overview") renderOverview();
+      if (name === "review") renderReview();
+      if (name === "practice") renderPractice();
+    }
+
+    document.getElementById("tabs").addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-tab]");
+      if (!btn) return;
+      showTab(btn.dataset.tab);
+    });
+
+    showTab("overview");
+  </script>
+</body>
+</html>

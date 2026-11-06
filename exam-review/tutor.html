@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>期中薄弱点 · 教学训练营</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <style>
+    :root {
+      --ink: #18212b;
+      --muted: #5a6573;
+      --paper: #f3f0e8;
+      --panel: #fffcf6;
+      --line: #d5ccbc;
+      --teal: #0d6758;
+      --teal-soft: #d7efe9;
+      --amber: #8a5314;
+      --amber-soft: #f2e3cf;
+      --rose: #8d3030;
+      --rose-soft: #f2d8d8;
+      --green: #1d6840;
+      --green-soft: #d8ecdf;
+      --serif: "Noto Serif SC", "Songti SC", serif;
+      --sans: "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(900px 420px at 0% 0%, #dceee8 0%, transparent 55%),
+        radial-gradient(800px 380px at 100% 0%, #efe4d3 0%, transparent 50%),
+        var(--paper);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 24px 16px 72px; }
+    h1, h2, h3 { font-family: var(--serif); margin: 0 0 10px; font-weight: 700; }
+    h1 { font-size: clamp(1.7rem, 3.6vw, 2.35rem); letter-spacing: 0.02em; }
+    .lead { color: var(--muted); max-width: 40rem; margin: 0 0 18px; }
+    button, .chip {
+      font: inherit; cursor: pointer; border: 1px solid var(--line);
+      background: var(--panel); color: var(--ink); border-radius: 10px;
+      padding: 8px 14px; transition: .15s border-color, .15s background, .15s color;
+    }
+    button:hover, .chip:hover { border-color: var(--teal); }
+    button.primary, .chip.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+    button.ghost { background: transparent; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .topbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0 18px; }
+    .panel {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+      padding: 16px 18px; margin: 12px 0; box-shadow: 0 1px 0 rgba(24,33,43,.04);
+    }
+    .grid { display: grid; gap: 12px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .mod-card { cursor: pointer; text-align: left; padding: 14px; }
+    .mod-card .tag { color: var(--muted); font-size: .88rem; margin-bottom: 4px; }
+    .mod-card .prog {
+      margin-top: 10px; height: 6px; background: #ebe4d8; border-radius: 99px; overflow: hidden;
+    }
+    .mod-card .prog > i { display: block; height: 100%; background: var(--teal); width: 0%; }
+    .pill {
+      display: inline-block; border-radius: 999px; padding: 3px 10px; font-size: .82rem;
+      background: var(--teal-soft); color: var(--teal);
+    }
+    .pill.warn { background: var(--amber-soft); color: var(--amber); }
+    .pill.bad { background: var(--rose-soft); color: var(--rose); }
+    .pill.ok { background: var(--green-soft); color: var(--green); }
+    .steps { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 14px; }
+    .callout {
+      border-left: 4px solid var(--teal); background: var(--teal-soft);
+      padding: 10px 12px; border-radius: 0 10px 10px 0; margin: 10px 0;
+    }
+    .callout.warn { border-left-color: var(--amber); background: var(--amber-soft); }
+    .callout.bad { border-left-color: var(--rose); background: var(--rose-soft); }
+    .callout.ok { border-left-color: var(--green); background: var(--green-soft); }
+    .lesson li { margin: 6px 0; }
+    .example-step {
+      padding: 10px 12px; border: 1px dashed var(--line); border-radius: 10px; margin: 8px 0;
+    }
+    .options { display: grid; gap: 8px; margin: 10px 0; }
+    .options button { text-align: left; }
+    input[type=text] {
+      width: 100%; font: inherit; padding: 10px 12px; border-radius: 10px;
+      border: 1px solid var(--line); background: #fff;
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+    .muted { color: var(--muted); }
+    .stat-row { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+    .stat { background: var(--teal-soft); border-radius: 12px; padding: 12px 14px; }
+    .stat b { display: block; font-family: var(--serif); font-size: 1.3rem; }
+    .stat span { color: var(--muted); font-size: .9rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; }
+    .feedback-score { font-family: var(--serif); font-size: 2rem; color: var(--teal); }
+    [hidden] { display: none !important; }
+    @media (max-width: 760px) {
+      .grid-2, .grid-3, .stat-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .grid-2, .grid-3, .stat-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>期中薄弱点 · 教学训练营</h1>
+      <p class="lead">依据《江汉区期中模拟卷 1》卷面错题识别出的薄弱环节：每个知识点含学习 → 精讲 → 测试 → 反馈。</p>
+      <div class="topbar" id="topbar"></div>
+    </header>
+    <main id="app"></main>
+  </div>
+
+<script>
+const STORAGE_KEY = "jh-midterm-tutor-v1";
+
+const MODULES = [
+  {
+    id: "inv-mono",
+    exam: "第5题",
+    priority: "高",
+    title: "反比例函数性质",
+    blurb: "象限、对称、分区间增减性——尤其是“不正确”陷阱题。",
+    goals: ["由 k 的符号判断象限", "正确表述增减性（分区间）", "识别对称性表述"],
+    learn: [
+      { h: "标准形式", t: "反比例函数 $y=\\dfrac{k}{x}$（$k\\neq 0$）。图像是双曲线，有两支，以坐标轴为渐近线。" },
+      { h: "象限", t: "$k>0$：一、三象限；$k<0$：二、四象限。" },
+      { h: "对称性", t: "关于原点中心对称；也关于直线 $y=x$、$y=-x$ 对称。" },
+      { h: "增减性（易错）", t: "只能在同一个连通区间内讨论。$k>0$ 时在 $(-\\infty,0)$、$(0,+\\infty)$ 上各自递减；$k<0$ 时各自递增。不能跨象限说“$y$ 随 $x$ 增大而增大/减小”。" }
+    ],
+    explain: {
+      title: "精讲原卷第5题",
+      stem: "反比例函数 $y=-\\dfrac{3}{x}$，下列说法不正确的是？A. $y$ 随 $x$ 增大而增大；B. 过 $(1,-3)$；C. 位于二、四象限；D. 关于 $y=x$ 对称。",
+      steps: [
+        "$k=-3<0$ ⇒ 图像在二、四象限，C 正确。",
+        "代入 $(1,-3)$：$ -3=-3/1$，B 正确。",
+        "$y=k/x$ 必关于 $y=x$ 对称，D 正确。",
+        "A 未限定区间：取 $x_1=-1,y_1=3$ 与 $x_2=1,y_2=-3$，x 增大但 y 减小，故 A 不正确。"
+      ],
+      tip: "遇到“不正确”题：先验证每个正确项，剩下的就是答案。"
+    },
+    quiz: [
+      {
+        id: "q1", type: "choice",
+        stem: "关于 $y=2/x$，错误的是？",
+        options: ["A. 图像在一、三象限", "B. 在 $(0,+\\infty)$ 上递减", "C. $y$ 随 $x$ 增大而减小（不限区间）", "D. 关于原点对称"],
+        answer: "C",
+        explain: "C 未限定区间。跨象限时单调性结论不成立。"
+      },
+      {
+        id: "q2", type: "choice",
+        stem: "$y=-5/x$ 在 $(-\\infty,0)$ 上是？",
+        options: ["A. 增函数", "B. 减函数", "C. 先增后减", "D. 不能谈增减"],
+        answer: "A",
+        explain: "$k<0$，每一支都是增函数。"
+      },
+      {
+        id: "q3", type: "blank",
+        stem: "$y=-4/x$ 的图像位于第几象限？（填“二、四”或“一、三”）",
+        answer: "二、四",
+        accept: ["二、四", "二四", "第2、4", "2、4", "第二、四"],
+        explain: "$k=-4<0$，位于第二、四象限。"
+      }
+    ]
+  },
+  {
+    id: "quad-interval",
+    exam: "第14题",
+    priority: "很高",
+    title: "二次函数闭区间最值",
+    blurb: "对称轴是否在区间内 + 开口方向分类讨论，两解要写全。",
+    goals: ["写出顶点式并找对称轴", "按 a>0 / a<0 分类", "在顶点与端点间取最值", "检验并写全所有解"],
+    learn: [
+      { h: "顶点式", t: "$y=a(x-h)^2+k$，顶点 $(h,k)$，对称轴 $x=h$。" },
+      { h: "开口与最值位置", t: "开口向下（$a<0$）：最大值优先看顶点（若在区间内）。开口向上（$a>0$）：最大值在离对称轴更远的端点；最小值在顶点（若在区间内）。" },
+      { h: "标准流程", t: "①配方 ②看对称轴是否∈区间 ③按开口分类 ④比较端点/顶点 ⑤回代检验。" },
+      { h: "填空提醒", t: "参数题常有两解。只写一解通常整题不得分。" }
+    ],
+    explain: {
+      title: "精讲原卷第14题",
+      stem: "$y=ax^2+4ax+2$ 在 $-4\\le x\\le 1$ 有最大值 5，求 $a$。",
+      steps: [
+        "配方：$y=a(x+2)^2-4a+2$，对称轴 $x=-2\\in[-4,1]$。",
+        "若 $a<0$：最大值在顶点 $-4a+2=5$ ⇒ $a=-3/4$。",
+        "若 $a>0$：最大值在更远端点 $x=1$：$5a+2=5$ ⇒ $a=3/5$（此时 $y(-4)=2<5$）。",
+        "答案：$a=-3/4$ 或 $a=3/5$。"
+      ],
+      tip: "漏写 $-3/4$ 是原卷典型失误：只想了开口向上的端点情形。"
+    },
+    quiz: [
+      {
+        id: "q1", type: "blank",
+        stem: "原题复习：$y=ax^2+4ax+2$ 在 $[-4,1]$ 最大值为 5，$a=$？（两解用“或”）",
+        answer: "-3/4或3/5",
+        accept: ["-3/4或3/5", "3/5或-3/4", "-3/4,3/5", "3/5,-3/4", "a=-3/4或a=3/5"],
+        explain: "开口向下得 $-3/4$，开口向上得 $3/5$。"
+      },
+      {
+        id: "q2", type: "blank",
+        stem: "$y=-x^2+2x+m$ 在 $0\\le x\\le 3$ 最大值是 5，则 $m=$？",
+        answer: "4",
+        accept: ["4", "m=4"],
+        explain: "对称轴 $x=1$ 在区间内，开口向下，顶点值 $1+m=5$ ⇒ $m=4$。"
+      },
+      {
+        id: "q3", type: "choice",
+        stem: "开口向上且对称轴在区间内时，闭区间上的最大值一定在？",
+        options: ["A. 顶点", "B. 两端点中离对称轴更远的那个", "C. 左端点", "D. 无法判断"],
+        answer: "B",
+        explain: "开口向上时顶点是最小值；最大值在更远的端点。"
+      }
+    ]
+  },
+  {
+    id: "inv-area",
+    exam: "第15题",
+    priority: "高",
+    title: "反比例 k 与面积",
+    blurb: "第一象限矩形面积 = k；再叠加比例与平行四边形关系。",
+    goals: ["记住 k 的面积意义", "用比例正确放缩面积", "检查是否少乘一次比例"],
+    learn: [
+      { h: "核心公式", t: "点 $P(t,k/t)$（$t>0$）向两轴作垂线，矩形面积 $t\\cdot(k/t)=k$。" },
+      { h: "三角形", t: "该矩形被对角线分成的直角三角形面积常为 $k/2$。" },
+      { h: "比例链", t: "若还有 $AE=2DE$ 或平行四边形，面积往往再 ×2 或 ×某个整数。算到中间量后要问：还缺哪一步？" }
+    ],
+    explain: {
+      title: "精讲原卷第15题",
+      stem: "平行四边形 $ABCD$ 顶点 $A$ 在 $y=k/x\\,(x>0)$ 上，$AE=2DE$，$\\triangle DCE$ 面积为 9，求 $k$。",
+      steps: [
+        "先用反比例的面积意义建立与 $k$ 相关的矩形/三角形面积。",
+        "$AE=2DE$ ⇒ 相关线段比 2:1，面积随之按比例放大。",
+        "平行四边形面积关系再贡献一次翻倍。",
+        "原卷写 27 是少乘了 2；正确答案 $k=54$。"
+      ],
+      tip: "得到 27 这类“半成品”时，立刻检查比例是否用完。"
+    },
+    quiz: [
+      {
+        id: "q1", type: "blank",
+        stem: "第一象限点与坐标轴围成矩形面积为 12，则 $k=$？",
+        answer: "12", accept: ["12", "k=12"],
+        explain: "矩形面积等于 $k$。"
+      },
+      {
+        id: "q2", type: "blank",
+        stem: "上述矩形面积的一半为 9，则 $k=$？",
+        answer: "18", accept: ["18", "k=18"],
+        explain: "$(1/2)k=9$ ⇒ $k=18$。原题再经比例到 54。"
+      },
+      {
+        id: "q3", type: "choice",
+        stem: "算到中间量 27，已知还存在一次 2:1 面积放大，最终 k 最可能是？",
+        options: ["A. 27", "B. 54", "C. 13.5", "D. 9"],
+        answer: "B",
+        explain: "27×2=54，对应原卷第15题。"
+      }
+    ]
+  },
+  {
+    id: "rotation",
+    exam: "第16题",
+    priority: "中",
+    title: "旋转与求长",
+    blurb: "30°-60°-90° + 中点垂线 + 120° 旋转，优先坐标法。",
+    goals: ["用特殊直角三角形边比", "旋转保长与定向角", "坐标/向量旋转求点"],
+    learn: [
+      { h: "30°-60°-90°", t: "边比为 $1:\\sqrt{3}:2$。" },
+      { h: "旋转性质", t: "对应点到旋转中心距离相等；旋转角等于定向角。180° 时三点共线且中心为中点。" },
+      { h: "120° 旋转", t: "向量 $(x,y)$ 顺时针 120°：可用复数乘 $e^{-i 2\\pi/3}$，或旋转矩阵。结果常含 $\\sqrt{3}$。" },
+      { h: "策略", t: "复杂求长优先建系，不要凭感觉套勾股。" }
+    ],
+    explain: {
+      title: "精讲原卷第16题",
+      stem: "$Rt\\triangle ABC$，$\\angle C=90^\\circ$，$\\angle B=30^\\circ$，中点 $E$，垂线 $EF$，再顺时针旋转 120° 得 $EG$。$BD=4,BF=6$，求 $CG$。",
+      steps: [
+        "用 30°-60°-90° 与已知线段写出相关长度。",
+        "以合适原点建系，写出 $E,F$ 坐标。",
+        "将向量 $\\overrightarrow{EF}$ 顺时针旋转 120° 得 $\\overrightarrow{EG}$，求出 $G$。",
+        "计算 $CG$ 并化简，得 $6-2\\sqrt{3}$（不是 $2\\sqrt{5}$）。"
+      ],
+      tip: "答案若只有根号整数型、没有 $\\sqrt{3}$，要怀疑旋转角没用上。"
+    },
+    quiz: [
+      {
+        id: "q1", type: "choice",
+        stem: "F 绕 E 旋转 180° 得 G，一定正确的是？",
+        options: ["A. EG=2EF", "B. E 是 FG 中点且 EG=EF", "C. ∠FEG=90°", "D. FG⊥EF"],
+        answer: "B",
+        explain: "180° 旋转：等距且中心为中点。"
+      },
+      {
+        id: "q2", type: "choice",
+        stem: "旋转 120° 后求线段长，更稳妥的方法是？",
+        options: ["A. 凭图目测", "B. 只用不含角度的勾股", "C. 坐标/向量旋转后再算距离", "D. 直接答案写整数"],
+        answer: "C",
+        explain: "定向角必须进入计算，坐标法最稳。"
+      },
+      {
+        id: "q3", type: "blank",
+        stem: "原题答案回顾：$CG=$？（可写 6-2√3）",
+        answer: "6-2√3",
+        accept: ["6-2√3", "6-2\\sqrt{3}", "6-2sqrt3"],
+        explain: "原卷正解 $6-2\\sqrt{3}$。"
+      }
+    ]
+  },
+  {
+    id: "profit",
+    exam: "第22题",
+    priority: "很高",
+    title: "利润问题：顶点最值",
+    blurb: "“利润=某数”解方程；“利润最大”求对称轴——二者不要混。",
+    goals: ["正确建模 W(m)", "区分定值与最值", "用对称轴求最大", "回代成实际量（房价）"],
+    learn: [
+      { h: "建模模板", t: "数量随提价线性变化，单价=原价+提价，利润=(单价-成本)×数量，得到二次函数。" },
+      { h: "定值问法", t: "“利润为 8640” ⇒ 令 $W=8640$ 解方程。" },
+      { h: "最值问法", t: "“利润最大” ⇒ 开口向下时取对称轴 $m=-b/(2a)$。" },
+      { h: "收尾", t: "题目问的是房价还是提价？别只答 $m$。" }
+    ],
+    explain: {
+      title: "精讲原卷第22题(2)②",
+      stem: "50 间房，180 元住满；每涨 10 元空 1 间；成本 20 元/间。何时利润最大？",
+      steps: [
+        "入住 $50-m/10$，利润 $W=(160+m)(50-m/10)=-m^2/10+34m+8000$。",
+        "对称轴 $m=-34/(2\\cdot(-1/10))=170$。",
+        "房价 $180+170=350$ 元。",
+        "若强制 $m$ 为 10 的倍数，再比较 $m=160$ 与 $180$。"
+      ],
+      tip: "原卷易错：把解 $W=8640$ 的根当成“最大利润”对应的提价。"
+    },
+    quiz: [
+      {
+        id: "q1", type: "blank",
+        stem: "$W=-m^2/10+34m+8000$，使 W 最大的 m 是？",
+        answer: "170", accept: ["170", "m=170"],
+        explain: "对称轴 $m=170$。"
+      },
+      {
+        id: "q2", type: "blank",
+        stem: "原价 180，提价 170 时利润最大，定价多少元？",
+        answer: "350", accept: ["350", "350元"],
+        explain: "180+170=350。"
+      },
+      {
+        id: "q3", type: "choice",
+        stem: "下列哪个该用顶点/对称轴，而不是解方程？",
+        options: ["A. 利润刚好 8640 时的定价", "B. 利润最大时的定价", "C. 空出 5 间时的提价", "D. 单价 200 时的利润"],
+        answer: "B",
+        explain: "只有“最大/最小”用顶点；定值用方程。"
+      }
+    ]
+  },
+  {
+    id: "fixed-point",
+    exam: "第24题",
+    priority: "很高",
+    title: "定点 · 韦达 · 抛物线",
+    blurb: "会求定点只是第(1)步；还要把定点接到联立与几何条件。",
+    goals: ["含参直线配方找定点", "直线与抛物线联立用韦达", "利用抛物线对称轴", "把 AG=AF 等条件坐标化"],
+    learn: [
+      { h: "定点套路", t: "$y-y_0=k(x-x_0)$ 形式 ⇒ 恒过 $(x_0,y_0)$。" },
+      { h: "联立", t: "直线代入抛物线得二次方程，韦达定理表示两交点横坐标之和/积。" },
+      { h: "对称", t: "抛物线 $y=x^2-2x-3$ 对称轴 $x=1$；横弦关于对称轴对称。" },
+      { h: "推进策略", t: "第(1)问定点会做后，立刻写联立方程，不要停在“已经会一点”。" }
+    ],
+    explain: {
+      title: "精讲原卷第24题",
+      stem: "直线 $y=kx-k-1$ 与抛物线 $y=x^2-2x-3$ 交于 A,B。",
+      steps: [
+        "(1) $y+1=k(x-1)$ ⇒ 定点 $D(1,-1)$（已掌握）。",
+        "联立：$x^2-(2+k)x+(k-2)=0$，用韦达表示 $x_A+x_B$、$x_Ax_B$。",
+        "(2) 结合 $k<0$、交 y 轴、顶点、射线条件 $AG=AF$，列坐标等式求 $x_A$。",
+        "(3) 过 B 作横线交抛物线于 C（对称点），再证/求直线 AC 的定点。"
+      ],
+      tip: "空白失分主因：不敢从定点走向韦达。先把联立写出来就成功一半。"
+    },
+    quiz: [
+      {
+        id: "q1", type: "blank",
+        stem: "$y=k(x-2)+3$ 恒过定点？写成 (x,y)",
+        answer: "(2,3)", accept: ["(2,3)", "（2，3）", "(2, 3)"],
+        explain: "括号为 0 时读出定点 (2,3)。"
+      },
+      {
+        id: "q2", type: "blank",
+        stem: "$y=2kx-4k+1$ 的定点是？",
+        answer: "(2,1)", accept: ["(2,1)", "（2，1）", "(2, 1)"],
+        explain: "$y-1=2k(x-2)$ ⇒ (2,1)。"
+      },
+      {
+        id: "q3", type: "choice",
+        stem: "做完定点后，下一步通常是？",
+        options: ["A. 直接放弃后面问", "B. 直线与抛物线联立并用韦达", "C. 只画草图不写方程", "D. 只求顶点不管交点"],
+        answer: "B",
+        explain: "定点之后立刻联立，是第24题(2)(3)的入口。"
+      }
+    ]
+  }
+];
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+function saveState(s) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+}
+
+let state = Object.assign({
+  view: "home",
+  moduleId: null,
+  stage: "learn",
+  answers: {},
+  checked: {},
+  moduleDone: {}
+}, loadState());
+
+function persist() {
+  saveState({
+    view: state.view,
+    moduleId: state.moduleId,
+    stage: state.stage,
+    answers: state.answers,
+    checked: state.checked,
+    moduleDone: state.moduleDone
+  });
+}
+
+function norm(s) {
+  return String(s || "")
+    .replace(/\s+/g, "")
+    .replace(/／/g, "/")
+    .replace(/，/g, ",")
+    .replace(/（/g, "(")
+    .replace(/）/g, ")")
+    .replace(/√/g, "√")
+    .toLowerCase();
+}
+
+function isCorrect(q, raw) {
+  const n = norm(raw);
+  if (!n) return false;
+  const keys = [q.answer, ...(q.accept || [])].map(norm);
+  return keys.some((k) => k === n);
+}
+
+function moduleScore(mod) {
+  const qs = mod.quiz;
+  let ok = 0, done = 0;
+  qs.forEach((q) => {
+    const key = mod.id + ":" + q.id;
+    if (state.checked[key]) {
+      done++;
+      if (isCorrect(q, state.answers[key])) ok++;
+    }
+  });
+  return { ok, done, total: qs.length, pct: done ? Math.round(ok / done * 100) : 0, finished: done === qs.length };
+}
+
+function overall() {
+  let ok = 0, done = 0, total = 0;
+  MODULES.forEach((m) => {
+    const s = moduleScore(m);
+    ok += s.ok; done += s.done; total += s.total;
+  });
+  return { ok, done, total, modulesDone: MODULES.filter((m) => moduleScore(m).finished).length };
+}
+
+function renderMath(root) {
+  if (window.renderMathInElement) {
+    renderMathInElement(root, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ],
+      throwOnError: false
+    });
+  }
+}
+
+function el(html) {
+  const t = document.createElement("template");
+  t.innerHTML = html.trim();
+  return t.content.firstElementChild;
+}
+
+function setView(view, moduleId, stage) {
+  state.view = view;
+  if (moduleId !== undefined) state.moduleId = moduleId;
+  if (stage !== undefined) state.stage = stage;
+  persist();
+  render();
+}
+
+function renderTopbar() {
+  const bar = document.getElementById("topbar");
+  bar.innerHTML = "";
+  const home = el(`<button class="${state.view === "home" ? "primary" : ""}">总览</button>`);
+  home.onclick = () => setView("home");
+  bar.appendChild(home);
+  const report = el(`<button class="${state.view === "report" ? "primary" : ""}">总反馈报告</button>`);
+  report.onclick = () => setView("report");
+  bar.appendChild(report);
+  if (state.view === "module") {
+    const back = el(`<button class="ghost">返回模块列表</button>`);
+    back.onclick = () => setView("home");
+    bar.appendChild(back);
+  }
+  const reset = el(`<button class="ghost">清空进度</button>`);
+  reset.onclick = () => {
+    if (confirm("确定清空全部作答与进度？")) {
+      state.answers = {};
+      state.checked = {};
+      state.moduleDone = {};
+      persist();
+      render();
+    }
+  };
+  bar.appendChild(reset);
+}
+
+function renderHome() {
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+  const o = overall();
+  app.appendChild(el(`
+    <div class="stat-row">
+      <div class="stat"><b>${o.modulesDone}/6</b><span>已测完模块</span></div>
+      <div class="stat"><b>${o.ok}/${o.done || 0}</b><span>已批改正确</span></div>
+      <div class="stat"><b>${o.total}</b><span>题库总量</span></div>
+      <div class="stat"><b>${o.done ? Math.round(o.ok / o.done * 100) + "%" : "—"}</b><span>当前正确率</span></div>
+    </div>
+  `));
+  app.appendChild(el(`
+    <div class="panel">
+      <h2>试卷薄弱点地图</h2>
+      <p class="muted">来源：江汉区期中模拟卷 1 图片识别与红笔批改。建议按“很高 → 高 → 中”顺序学习。</p>
+      <table>
+        <thead><tr><th>模块</th><th>对应题</th><th>优先级</th><th>测试进度</th></tr></thead>
+        <tbody>
+          ${MODULES.map((m) => {
+            const s = moduleScore(m);
+            return `<tr>
+              <td>${m.title}</td>
+              <td>${m.exam}</td>
+              <td><span class="pill ${m.priority === "很高" ? "bad" : m.priority === "高" ? "warn" : ""}">${m.priority}</span></td>
+              <td>${s.done}/${s.total}${s.finished ? " · 已完成" : ""}</td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `));
+
+  const grid = el(`<div class="grid grid-2"></div>`);
+  MODULES.forEach((m) => {
+    const s = moduleScore(m);
+    const pct = Math.round(s.done / s.total * 100);
+    const card = el(`
+      <button class="panel mod-card">
+        <div class="tag">${m.exam} · 优先级 ${m.priority}</div>
+        <h3>${m.title}</h3>
+        <div class="muted">${m.blurb}</div>
+        <div class="prog"><i style="width:${pct}%"></i></div>
+        <div class="muted" style="margin-top:6px">${s.finished ? `测试 ${s.ok}/${s.total}` : "学习 → 精讲 → 测试 → 反馈"}</div>
+      </button>
+    `);
+    card.onclick = () => setView("module", m.id, "learn");
+    grid.appendChild(card);
+  });
+  app.appendChild(grid);
+}
+
+function renderModule() {
+  const mod = MODULES.find((m) => m.id === state.moduleId) || MODULES[0];
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+  app.appendChild(el(`
+    <div class="panel">
+      <div class="muted">${mod.exam} · 优先级 ${mod.priority}</div>
+      <h2>${mod.title}</h2>
+      <p>${mod.blurb}</p>
+      <div class="row">${mod.goals.map((g) => `<span class="pill">${g}</span>`).join("")}</div>
+    </div>
+  `));
+
+  const steps = el(`<div class="steps"></div>`);
+  [["learn","① 学习"],["explain","② 精讲"],["quiz","③ 测试"],["feedback","④ 反馈"]].forEach(([id, label]) => {
+    const b = el(`<button class="${state.stage === id ? "primary" : ""}">${label}</button>`);
+    b.onclick = () => setView("module", mod.id, id);
+    steps.appendChild(b);
+  });
+  app.appendChild(steps);
+
+  if (state.stage === "learn") renderLearn(app, mod);
+  if (state.stage === "explain") renderExplain(app, mod);
+  if (state.stage === "quiz") renderQuiz(app, mod);
+  if (state.stage === "feedback") renderModuleFeedback(app, mod);
+}
+
+function renderLearn(app, mod) {
+  const panel = el(`<div class="panel lesson"><h3>知识点学习</h3></div>`);
+  mod.learn.forEach((item) => {
+    panel.appendChild(el(`
+      <div class="example-step">
+        <strong>${item.h}</strong>
+        <div>${item.t}</div>
+      </div>
+    `));
+  });
+  const next = el(`<div class="row"><button class="primary">去精讲原题 →</button></div>`);
+  next.querySelector("button").onclick = () => setView("module", mod.id, "explain");
+  panel.appendChild(next);
+  app.appendChild(panel);
+}
+
+function renderExplain(app, mod) {
+  const e = mod.explain;
+  const panel = el(`
+    <div class="panel">
+      <h3>${e.title}</h3>
+      <div class="callout warn"><strong>题干：</strong>${e.stem}</div>
+      <ol>${e.steps.map((s) => `<li>${s}</li>`).join("")}</ol>
+      <div class="callout"><strong>点拨：</strong>${e.tip}</div>
+      <div class="row">
+        <button class="ghost" id="backLearn">← 回学习</button>
+        <button class="primary" id="toQuiz">去做测试 →</button>
+      </div>
+    </div>
+  `);
+  panel.querySelector("#backLearn").onclick = () => setView("module", mod.id, "learn");
+  panel.querySelector("#toQuiz").onclick = () => setView("module", mod.id, "quiz");
+  app.appendChild(panel);
+}
+
+function renderQuiz(app, mod) {
+  const wrap = el(`<div></div>`);
+  mod.quiz.forEach((q, idx) => {
+    const key = mod.id + ":" + q.id;
+    const val = state.answers[key] || "";
+    const done = !!state.checked[key];
+    const ok = done && isCorrect(q, val);
+    const bad = done && !isCorrect(q, val);
+    const card = el(`
+      <div class="panel">
+        <div><strong>第 ${idx + 1} 题</strong>
+          ${ok ? '<span class="pill ok">正确</span>' : ""}
+          ${bad ? '<span class="pill bad">再看</span>' : ""}
+        </div>
+        <p>${q.stem}</p>
+      </div>
+    `);
+
+    if (q.type === "choice") {
+      const opts = el(`<div class="options"></div>`);
+      q.options.forEach((opt) => {
+        const letter = opt.trim()[0];
+        const b = el(`<button class="${norm(val) === norm(letter) ? "primary" : ""}">${opt}</button>`);
+        b.onclick = () => {
+          state.answers[key] = letter;
+          persist();
+          render();
+        };
+        opts.appendChild(b);
+      });
+      card.appendChild(opts);
+    } else {
+      const input = el(`<input type="text" placeholder="输入答案" />`);
+      input.value = val;
+      input.oninput = (ev) => { state.answers[key] = ev.target.value; };
+      input.onchange = () => persist();
+      card.appendChild(input);
+    }
+
+    const row = el(`<div class="row"></div>`);
+    const submit = el(`<button class="primary">提交本题</button>`);
+    submit.onclick = () => {
+      if (q.type === "blank") {
+        const input = card.querySelector("input");
+        state.answers[key] = input ? input.value : state.answers[key];
+      }
+      state.checked[key] = true;
+      persist();
+      render();
+    };
+    row.appendChild(submit);
+    card.appendChild(row);
+
+    if (done) {
+      card.appendChild(el(`
+        <div class="callout ${ok ? "ok" : "bad"}">
+          <strong>${ok ? "正确。" : "再想一想。参考：" + q.answer}</strong>
+          <div>${q.explain}</div>
+        </div>
+      `));
+    }
+    wrap.appendChild(card);
+  });
+
+  const s = moduleScore(mod);
+  const foot = el(`
+    <div class="panel">
+      <p>本模块进度：已批改 ${s.done}/${s.total}，正确 ${s.ok}</p>
+      <div class="row">
+        <button class="ghost" id="backEx">← 回精讲</button>
+        <button class="primary" id="toFb" ${s.done === 0 ? "disabled" : ""}>查看本模块反馈 →</button>
+      </div>
+    </div>
+  `);
+  foot.querySelector("#backEx").onclick = () => setView("module", mod.id, "explain");
+  foot.querySelector("#toFb").onclick = () => setView("module", mod.id, "feedback");
+  wrap.appendChild(foot);
+  app.appendChild(wrap);
+}
+
+function renderModuleFeedback(app, mod) {
+  const s = moduleScore(mod);
+  let level = "还需练习";
+  let tone = "warn";
+  if (s.finished && s.ok === s.total) { level = "本模块过关"; tone = "ok"; }
+  else if (s.pct >= 70) { level = "基本掌握，订正错题"; tone = "warn"; }
+  else if (s.done === 0) { level = "尚未测试"; tone = "warn"; }
+  else { level = "建议重学精讲再测"; tone = "bad"; }
+
+  const weak = mod.quiz
+    .filter((q) => state.checked[mod.id + ":" + q.id] && !isCorrect(q, state.answers[mod.id + ":" + q.id]))
+    .map((q) => q.stem.replace(/\$/g, ""));
+
+  if (s.finished) {
+    state.moduleDone[mod.id] = { ok: s.ok, total: s.total, at: Date.now() };
+    persist();
+  }
+
+  const panel = el(`
+    <div class="panel">
+      <h3>本模块反馈</h3>
+      <div class="feedback-score">${s.done ? s.ok + "/" + s.done : "—"}</div>
+      <div class="callout ${tone}"><strong>${level}</strong></div>
+      <p>对应原卷：${mod.exam}。目标能力：${mod.goals.join("；")}。</p>
+      ${weak.length ? `<h4>仍需订正</h4><ul>${weak.map((w) => `<li>${w}</li>`).join("")}</ul>` : "<p class='muted'>本模块已提交题目暂无错题。</p>"}
+      <div class="callout">
+        <strong>下一步建议：</strong>
+        ${s.finished && s.ok === s.total
+          ? "进入下一优先级模块，或打开总反馈报告查看全局。"
+          : "回到精讲对照方法卡，重做错题后再次提交。"}
+      </div>
+      <div class="row">
+        <button class="ghost" id="requiz">继续测试</button>
+        <button class="primary" id="home">回总览</button>
+        <button id="report">总反馈报告</button>
+      </div>
+    </div>
+  `);
+  panel.querySelector("#requiz").onclick = () => setView("module", mod.id, "quiz");
+  panel.querySelector("#home").onclick = () => setView("home");
+  panel.querySelector("#report").onclick = () => setView("report");
+  app.appendChild(panel);
+}
+
+function renderReport() {
+  const app = document.getElementById("app");
+  const o = overall();
+  app.innerHTML = "";
+  app.appendChild(el(`
+    <div class="panel">
+      <h2>总反馈报告</h2>
+      <div class="feedback-score">${o.modulesDone}/6 模块测完</div>
+      <p>累计正确 ${o.ok} / 已作答 ${o.done}（题库 ${o.total} 题）</p>
+    </div>
+  `));
+
+  const rows = MODULES.map((m) => {
+    const s = moduleScore(m);
+    let advice = "未开始测试";
+    if (s.finished && s.ok === s.total) advice = "过关，保持周练 2 题";
+    else if (s.finished && s.pct >= 70) advice = "订正错题后再测一次";
+    else if (s.done > 0) advice = "重看精讲，完成全部测试题";
+    else advice = "按 学习→精讲→测试 开始";
+    return `<tr>
+      <td>${m.title}</td>
+      <td>${m.exam}</td>
+      <td>${s.ok}/${s.done || 0}</td>
+      <td>${advice}</td>
+    </tr>`;
+  }).join("");
+
+  app.appendChild(el(`
+    <div class="panel">
+      <table>
+        <thead><tr><th>知识点</th><th>原题</th><th>正确/已答</th><th>反馈建议</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `));
+
+  const order = ["quad-interval", "profit", "inv-mono", "fixed-point", "inv-area", "rotation"];
+  const next = order.map((id) => MODULES.find((m) => m.id === id)).find((m) => !moduleScore(m).finished || moduleScore(m).ok < moduleScore(m).total);
+
+  app.appendChild(el(`
+    <div class="panel">
+      <h3>个性化补强路径</h3>
+      <ol>
+        <li>二次函数闭区间最值（分类讨论写全解）</li>
+        <li>利润问题：定值方程 vs 顶点最值</li>
+        <li>反比例增减性表述陷阱</li>
+        <li>定点后联立韦达继续做综合</li>
+        <li>反比例面积比例链</li>
+        <li>旋转坐标法求长</li>
+      </ol>
+      ${next ? `<div class="callout"><strong>建议下一步：</strong>${next.title}（${next.exam}）</div>` : `<div class="callout ok"><strong>全部模块已测完。</strong>可清空进度再刷一轮，或只重做错题模块。</div>`}
+      <div class="row">
+        ${next ? `<button class="primary" id="goNext">去学习：${next.title}</button>` : ""}
+        <button id="goHome">回总览</button>
+      </div>
+    </div>
+  `));
+  if (next) {
+    app.querySelector("#goNext").onclick = () => setView("module", next.id, "learn");
+  }
+  app.querySelector("#goHome").onclick = () => setView("home");
+}
+
+function render() {
+  renderTopbar();
+  if (state.view === "home") renderHome();
+  else if (state.view === "module") renderModule();
+  else renderReport();
+  renderMath(document.getElementById("app"));
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // wait katex auto-render
+  const boot = () => render();
+  if (window.renderMathInElement) boot();
+  else setTimeout(boot, 200);
+});
+</script>
+</body>
+</html>

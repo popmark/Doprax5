@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>初中几何 · 可拖动实验室</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  <script src="vendor/katex/katex.min.js"></script>
+  <style>
+    :root {
+      --ink:#18212b; --muted:#5a6573; --paper:#f3f0e8; --panel:#fffcf6;
+      --line:#d5ccbc; --teal:#0d6758; --teal-soft:#d7efe9;
+      --amber:#8a5314; --amber-soft:#f2e3cf; --rose:#8d3030; --rose-soft:#f2d8d8;
+      --green:#1d6840; --green-soft:#d8ecdf; --blue:#2a4d7a;
+      --serif:"Noto Serif SC","Songti SC",serif;
+      --sans:"Noto Sans SC","PingFang SC",sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);color:var(--ink);line-height:1.65;
+      background:radial-gradient(900px 420px at 0% 0%,#dceee8 0%,transparent 55%),radial-gradient(800px 380px at 100% 0%,#efe4d3 0%,transparent 50%),var(--paper)}
+    .wrap{max-width:1120px;margin:0 auto;padding:24px 16px 72px}
+    h1,h2,h3{font-family:var(--serif);margin:0 0 10px;font-weight:700}
+    h1{font-size:clamp(1.55rem,3.4vw,2.2rem)}
+    .lead{color:var(--muted);max-width:48rem;margin:0 0 16px}
+    button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:8px 14px}
+    button:hover{border-color:var(--teal)}
+    button.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+    button.ghost{background:transparent}
+    .topbar,.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+    .grid-2{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+    .pill{display:inline-block;border-radius:999px;padding:3px 10px;font-size:.82rem;background:var(--teal-soft);color:var(--teal);margin:2px}
+    .pill.warn{background:var(--amber-soft);color:var(--amber)}
+    .callout{border-left:4px solid var(--teal);background:var(--teal-soft);padding:10px 12px;border-radius:0 10px 10px 0;margin:10px 0}
+    .callout.warn{border-left-color:var(--amber);background:var(--amber-soft)}
+    .muted{color:var(--muted)}
+    .stage{
+      background:#fffdf8;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+      touch-action:none;user-select:none;
+    }
+    .stage svg{display:block;width:100%;height:auto;cursor:default}
+    .stage svg .handle{cursor:grab}
+    .stage svg .handle:active{cursor:grabbing}
+    .metrics{display:grid;gap:8px}
+    .metric{
+      background:var(--teal-soft);border-radius:12px;padding:10px 12px;
+      display:flex;justify-content:space-between;gap:10px;align-items:baseline;
+    }
+    .metric b{font-family:var(--serif);font-size:1.15rem;color:var(--teal)}
+    .nav-mods{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+    .hint{font-size:.92rem;color:var(--muted)}
+    ul.compact{margin:6px 0;padding-left:1.2rem}
+    ul.compact li{margin:4px 0}
+    @media(max-width:860px){.grid-2{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>初中几何 · 可拖动实验室</h1>
+    <p class="lead">按初中几何知识点拆分。拖动图中实心圆点，观察角度、边长与不变量如何变化——对应本卷第16、18、23题相关概念。</p>
+    <div class="topbar">
+      <a href="./course.html"><button class="ghost">分块课程</button></a>
+      <a href="./tutor.html"><button class="ghost">薄弱点营</button></a>
+      <a href="./index.html"><button class="ghost">错题本</button></a>
+      <button class="ghost" id="btnReset">重置当前图形</button>
+    </div>
+  </header>
+
+  <div class="nav-mods" id="modNav"></div>
+
+  <div class="panel" id="modHead"></div>
+
+  <div class="grid-2">
+    <div class="stage" id="stage"></div>
+    <div>
+      <div class="panel">
+        <h3>实时数据</h3>
+        <div class="metrics" id="metrics"></div>
+        <p class="hint" id="dragHint">拖动图中青色圆点改变图形。</p>
+      </div>
+      <div class="panel" id="concept"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const W = 640, H = 420;
+
+const MODULES = [
+  {
+    id: "angle-sum",
+    title: "三角形内角和",
+    tag: "基础性质",
+    exam: "通用基础",
+    tip: "拖动三个顶点，三角之和始终为 180°。",
+    concept: {
+      know: ["三角形内角和定理：$\\angle A+\\angle B+\\angle C=180^{\\circ}$", "外角等于不相邻两内角之和"],
+      think: ["改变形状不改变内角和——这是“不变量”思维的起点。"]
+    },
+    init() {
+      return { A:{x:120,y:320}, B:{x:520,y:320}, C:{x:280,y:90} };
+    },
+    handles: ["A","B","C"]
+  },
+  {
+    id: "isosceles",
+    title: "等腰三角形 · 底角相等",
+    tag: "等腰性质",
+    exam: "衔接第23题",
+    tip: "拖动顶角 A（底边 BC 固定）。两腰相等时，两底角始终相等。",
+    concept: {
+      know: ["等腰 ⇒ 两底角相等", "三线合一：顶角平分线、底边上的中线、高重合"],
+      think: ["用“等边对等角”读图；反之“等角对等边”。"]
+    },
+    init() {
+      return { A:{x:320,y:70}, B:{x:160,y:330}, C:{x:480,y:330}, mode:"iso" };
+    },
+    handles: ["A"]
+  },
+  {
+    id: "equilateral",
+    title: "等边三角形 · 旋转 60°",
+    tag: "等边 / 旋转",
+    exam: "第18题核心",
+    tip: "拖动点 P。旋转把 △ACP 绕 A 顺时针转 60° 得到 D，观察 ∠DAP=60° 且 AD=AP。",
+    concept: {
+      know: ["等边三角形三角均为 $60^{\\circ}$", "旋转保距保角", "等腰且顶角 $60^{\\circ}$ ⇒ 等边"],
+      think: ["第18题关键：旋转角 = 等边的 $60^{\\circ}$，再用 $150^{\\circ}-60^{\\circ}=90^{\\circ}$。"]
+    },
+    init() {
+      return {
+        A:{x:200,y:300}, B:{x:440,y:300}, C:{x:320,y:92},
+        P:{x:300,y:230}
+      };
+    },
+    handles: ["P"]
+  },
+  {
+    id: "rt306090",
+    title: "直角三角形 30°-60°-90°",
+    tag: "特殊直角",
+    exam: "第16题基础",
+    tip: "拖动斜边端点改变大小；保持锐角为 30°/60°，观察边比为 1 : √3 : 2。",
+    concept: {
+      know: ["$30^{\\circ}$-$60^{\\circ}$-$90^{\\circ}$ 边比 $1:\\sqrt{3}:2$", "直角边 = 斜边一半（对 $30^{\\circ}$）"],
+      think: ["先认角再套边比，避免盲目勾股。"]
+    },
+    init() {
+      return { C:{x:140,y:320}, scale:220, ang30:true };
+    },
+    handles: ["B"]
+  },
+  {
+    id: "rt4545",
+    title: "等腰直角 45°-45°-90°",
+    tag: "特殊直角",
+    exam: "第23题基础",
+    tip: "拖动斜边端点。两锐角始终 45°，直角边相等，斜边 = 直角边 × √2。",
+    concept: {
+      know: ["等腰直角：两锐角 $45^{\\circ}$", "边比 $1:1:\\sqrt{2}$"],
+      think: ["第23题两三角形都是等腰直角，边角关系固定。"]
+    },
+    init() {
+      return { C:{x:180,y:320}, leg:160 };
+    },
+    handles: ["A"]
+  },
+  {
+    id: "rotation",
+    title: "旋转：保距 · 保角",
+    tag: "变换",
+    exam: "第16/18题",
+    tip: "拖动点 F；拖动弧上的角控点改变旋转角。观察 EG=EF，定向角等于旋转角。",
+    concept: {
+      know: ["旋转：对应点到旋转中心距离相等", "旋转角 = 对应射线夹角", "图形全等"],
+      think: ["复杂求长优先：建系 + 旋转矩阵，而不是目测。"]
+    },
+    init() {
+      return { E:{x:320,y:210}, F:{x:420,y:140}, deg:120 };
+    },
+    handles: ["F","R"]
+  },
+  {
+    id: "rot180",
+    title: "180° 旋转 · 中心对称",
+    tag: "变换",
+    exam: "第23题探究",
+    tip: "拖动 A；T 为中点。180° 旋转后 A' 满足 T 为 AA' 中点，且 AT=TA'。",
+    concept: {
+      know: ["$180^{\\circ}$ 旋转 = 中心对称", "中心是对应点连线的中点", "可用来构造全等三角形"],
+      think: ["第23题：绕中点 T 旋转 180° 构造辅助全等。"]
+    },
+    init() {
+      return { T:{x:320,y:210}, A:{x:220,y:120} };
+    },
+    handles: ["A"]
+  },
+  {
+    id: "mid-perp",
+    title: "中点 + 垂线 ⇒ 线段相等",
+    tag: "中点 / 垂直",
+    exam: "第23题结论",
+    tip: "拖动 A、E、T。当 O 为 AE 中点且 TO⊥AE 时，观察与等腰的关系；也可自由拖动看一般情形。",
+    concept: {
+      know: ["线段垂直平分线上的点到两端距离相等", "若 $AO=EO$ 且 $TO\\perp AE$，则 $\\triangle TAE$ 等腰"],
+      think: ["第23题要证 $AO=EO$，本质是找中点/对称结构。"]
+    },
+    init() {
+      return { A:{x:160,y:160}, E:{x:500,y:200}, T:{x:300,y:340} };
+    },
+    handles: ["A","E","T"]
+  }
+];
+
+let modId = "equilateral";
+let st = null;
+let drag = null;
+
+function mathify(s){
+  if(!window.katex) return String(s||"");
+  return String(s||"").replace(/\$([^$]+)\$/g,(_,tex)=>{
+    try{return katex.renderToString(tex,{throwOnError:false,strict:"ignore"})}
+    catch{return tex}
+  });
+}
+function $(id){return document.getElementById(id)}
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
+function ang(a,b,c){
+  // angle at b, between a-b-c
+  const v1={x:a.x-b.x,y:a.y-b.y}, v2={x:c.x-b.x,y:c.y-b.y};
+  const d=Math.atan2(v1.y,v1.x)-Math.atan2(v2.y,v2.x);
+  let deg=Math.abs(d*180/Math.PI); if(deg>180) deg=360-deg; return deg;
+}
+function rotate(p,o,deg){
+  const r=deg*Math.PI/180, c=Math.cos(r), s=Math.sin(r);
+  const x=p.x-o.x, y=p.y-o.y;
+  return {x:o.x+x*c-y*s, y:o.y+x*s+y*c};
+}
+function mid(a,b){return {x:(a.x+b.x)/2, y:(a.y+b.y)/2}}
+function clamp(p){return {x:Math.max(24,Math.min(W-24,p.x)), y:Math.max(24,Math.min(H-24,p.y))}}
+function fmt(n,d=1){return (Math.round(n*10**d)/10**d).toFixed(d)}
+function label(svg,p,text,dy=-10){
+  const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+  t.setAttribute("x",p.x); t.setAttribute("y",p.y+dy);
+  t.setAttribute("text-anchor","middle"); t.setAttribute("font-size","14");
+  t.setAttribute("font-family","Noto Sans SC,sans-serif"); t.setAttribute("fill","#18212b");
+  t.textContent=text; svg.appendChild(t);
+}
+function line(svg,a,b,opts={}){
+  const l=document.createElementNS("http://www.w3.org/2000/svg","line");
+  l.setAttribute("x1",a.x); l.setAttribute("y1",a.y); l.setAttribute("x2",b.x); l.setAttribute("y2",b.y);
+  l.setAttribute("stroke",opts.stroke||"#0d6758"); l.setAttribute("stroke-width",opts.w||2.5);
+  if(opts.dash) l.setAttribute("stroke-dasharray",opts.dash);
+  svg.appendChild(l);
+}
+function poly(svg,pts,opts={}){
+  const p=document.createElementNS("http://www.w3.org/2000/svg","polygon");
+  p.setAttribute("points",pts.map(q=>`${q.x},${q.y}`).join(" "));
+  p.setAttribute("fill",opts.fill||"rgba(13,103,88,.10)");
+  p.setAttribute("stroke",opts.stroke||"#0d6758"); p.setAttribute("stroke-width",opts.w||2.5);
+  svg.appendChild(p);
+}
+function circle(svg,p,r,opts={}){
+  const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+  c.setAttribute("cx",p.x); c.setAttribute("cy",p.y); c.setAttribute("r",r);
+  c.setAttribute("fill",opts.fill||"#0d6758"); c.setAttribute("stroke",opts.stroke||"#fff");
+  c.setAttribute("stroke-width",opts.sw||2);
+  if(opts.cls) c.setAttribute("class",opts.cls);
+  if(opts.id) c.setAttribute("data-handle",opts.id);
+  svg.appendChild(c); return c;
+}
+function arcMark(svg,b,a,c,r=22){
+  // small arc at angle b
+  const a1=Math.atan2(a.y-b.y,a.x-b.x), a2=Math.atan2(c.y-b.y,c.x-b.x);
+  let d1=a1, d2=a2, diff=((d2-d1+Math.PI*3)%(Math.PI*2))-Math.PI;
+  d2=d1+diff;
+  const p1={x:b.x+r*Math.cos(d1),y:b.y+r*Math.sin(d1)};
+  const p2={x:b.x+r*Math.cos(d2),y:b.y+r*Math.sin(d2)};
+  const large=Math.abs(diff)>Math.PI?1:0;
+  const path=document.createElementNS("http://www.w3.org/2000/svg","path");
+  path.setAttribute("d",`M ${p1.x} ${p1.y} A ${r} ${r} 0 ${large} ${diff>0?1:0} ${p2.x} ${p2.y}`);
+  path.setAttribute("fill","none"); path.setAttribute("stroke","#8a5314"); path.setAttribute("stroke-width","2");
+  svg.appendChild(path);
+}
+function metrics(rows){
+  $("metrics").innerHTML = rows.map(([k,v])=>`<div class="metric"><span>${mathify(k)}</span><b>${v}</b></div>`).join("");
+}
+function concept(mod){
+  $("concept").innerHTML = mathify(`
+    <h3>知识点 · ${mod.title}</h3>
+    <div class="callout"><strong>对应：</strong>${mod.exam}</div>
+    <h3>知识结构</h3><ul class="compact">${mod.concept.know.map(x=>`<li>${x}</li>`).join("")}</ul>
+    <h3>思维方式</h3><ul class="compact">${mod.concept.think.map(x=>`<li>${x}</li>`).join("")}</ul>
+  `);
+}
+
+function currentMod(){return MODULES.find(m=>m.id===modId)}
+
+function buildRt306090(){
+  // C right angle, angle at C=90, angle at A=30 => B is 60
+  const C=st.C;
+  const hyp=st.scale;
+  // place A to the right of C (adjacent to 30 is longer? wait: side opposite 30 is half hypotenuse
+  // Let angle at A = 30, then BC (opposite A) = hyp/2, AC (adjacent) = hyp*√3/2
+  const A={x:C.x+hyp*Math.sqrt(3)/2, y:C.y};
+  const B={x:C.x, y:C.y-hyp/2};
+  st.A=A; st.B=B; st._hyp=hyp;
+}
+
+function buildRt4545(){
+  const C=st.C; const L=st.leg;
+  st.A={x:C.x+L,y:C.y}; st.B={x:C.x,y:C.y-L};
+}
+
+function draw(){
+  const mod=currentMod();
+  const stage=$("stage");
+  stage.innerHTML="";
+  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  svg.setAttribute("width","100%");
+  // background grid faint
+  for(let x=40;x<W;x+=40){
+    line(svg,{x,y:20},{x,y:H-20},{stroke:"#e8e0d2",w:1});
+  }
+  for(let y=40;y<H;y+=40){
+    line(svg,{x:20,y},{x:W-20,y},{stroke:"#e8e0d2",w:1});
+  }
+
+  if(mod.id==="angle-sum"){
+    const {A,B,C}=st;
+    poly(svg,[A,B,C]);
+    line(svg,A,B); line(svg,B,C); line(svg,C,A);
+    arcMark(svg,A,B,C); arcMark(svg,B,C,A); arcMark(svg,C,A,B);
+    label(svg,A,"A"); label(svg,B,"B"); label(svg,C,"C");
+    const aA=ang(B,A,C), aB=ang(A,B,C), aC=ang(A,C,B);
+    metrics([
+      ["$\\angle A$", fmt(aA)+"°"],
+      ["$\\angle B$", fmt(aB)+"°"],
+      ["$\\angle C$", fmt(aC)+"°"],
+      ["$\\angle A+\\angle B+\\angle C$", fmt(aA+aB+aC)+"°"]
+    ]);
+    ["A","B","C"].forEach(id=>circle(svg,st[id],9,{cls:"handle",id,fill:"#0d6758"}));
+  }
+
+  if(mod.id==="isosceles"){
+    // constrain: B,C fixed on base; A free; force AB=AC by moving C horizontally? Better rebuild C each frame from A,B
+    st.B={x:160,y:330}; 
+    const d=dist(st.A,st.B);
+    const k=d*d-(330-st.A.y)**2;
+    if(k>=0){
+      const dx=Math.sqrt(k);
+      let x=st.A.x+dx;
+      if(x<st.B.x+40) x=st.A.x-dx;
+      st.C=clamp({x,y:330});
+    } else {
+      st.A.y=Math.min(st.A.y,330-20);
+    }
+    const {A,B,C}=st;
+    poly(svg,[A,B,C],{fill:"rgba(138,83,20,.08)",stroke:"#8a5314"});
+    line(svg,A,B,{stroke:"#0d6758"}); line(svg,A,C,{stroke:"#0d6758"}); line(svg,B,C,{stroke:"#8a5314"});
+    // altitude
+    const M=mid(B,C); line(svg,A,M,{stroke:"#2a4d7a",dash:"6 4",w:2});
+    label(svg,A,"A"); label(svg,B,"B"); label(svg,C,"C");
+    const aB=ang(A,B,C), aC=ang(A,C,B);
+    metrics([
+      ["$AB$", fmt(dist(A,B))],
+      ["$AC$", fmt(dist(A,C))],
+      ["$\\angle ABC$", fmt(aB)+"°"],
+      ["$\\angle ACB$", fmt(aC)+"°"],
+      ["底角差 $|\\angle B-\\angle C|$", fmt(Math.abs(aB-aC))+"°"]
+    ]);
+    circle(svg,A,9,{cls:"handle",id:"A",fill:"#0d6758"});
+    circle(svg,B,6,{fill:"#8a5314"}); circle(svg,C,6,{fill:"#8a5314"});
+  }
+
+  if(mod.id==="equilateral"){
+    // keep ABC equilateral; only P moves
+    const side=240;
+    st.A={x:200,y:310}; st.B={x:200+side,y:310};
+    st.C={x:200+side/2, y:310-side*Math.sqrt(3)/2};
+    const {A,B,C,P}=st;
+    poly(svg,[A,B,C],{fill:"rgba(13,103,88,.08)"});
+    line(svg,A,B); line(svg,B,C); line(svg,C,A);
+    // rotate P around A by +60 deg (clockwise in screen y-down is actually visual clockwise with positive? 
+    // In screen coords y down, positive angle is clockwise.
+    const D=rotate(P,A,60);
+    line(svg,A,P,{stroke:"#2a4d7a",w:2});
+    line(svg,A,D,{stroke:"#8a5314",w:2});
+    line(svg,P,D,{stroke:"#8a5314",dash:"5 4",w:2});
+    // show angle at A between P and D
+    arcMark(svg,A,P,D,28);
+    label(svg,A,"A"); label(svg,B,"B"); label(svg,C,"C"); label(svg,P,"P"); label(svg,D,"D");
+    const dap=ang(P,A,D);
+    metrics([
+      ["$AP$", fmt(dist(A,P))],
+      ["$AD$（旋转后）", fmt(dist(A,D))],
+      ["$\\angle DAP$（旋转角）", fmt(dap)+"°"],
+      ["$PD$", fmt(dist(P,D))],
+      ["判定", Math.abs(dap-60)<1 && Math.abs(dist(A,P)-dist(A,D))<1 ? "△ADP 接近等边" : "继续观察 AD=AP 且 ∠=60°"]
+    ]);
+    circle(svg,P,9,{cls:"handle",id:"P",fill:"#0d6758"});
+    circle(svg,A,6,{fill:"#8a5314"}); circle(svg,B,6,{fill:"#8a5314"}); circle(svg,C,6,{fill:"#8a5314"}); circle(svg,D,6,{fill:"#8a5314"});
+  }
+
+  if(mod.id==="rt306090"){
+    buildRt306090();
+    const {A,B,C}=st;
+    poly(svg,[A,B,C],{fill:"rgba(42,77,122,.08)",stroke:"#2a4d7a"});
+    line(svg,A,B,{stroke:"#0d6758"}); line(svg,B,C); line(svg,C,A);
+    // right angle mark
+    const s=16;
+    const p1={x:C.x,y:C.y-s}, p2={x:C.x+s,y:C.y-s}, p3={x:C.x+s,y:C.y};
+    line(svg,p1,p2,{stroke:"#18212b",w:1.5}); line(svg,p2,p3,{stroke:"#18212b",w:1.5});
+    arcMark(svg,A,C,B,26);
+    label(svg,A,"A(30°)"); label(svg,B,"B(60°)"); label(svg,C,"C(90°)");
+    const ab=dist(A,B), bc=dist(B,C), ca=dist(C,A);
+    metrics([
+      ["$\\angle A$", fmt(ang(C,A,B))+"°"],
+      ["$\\angle B$", fmt(ang(A,B,C))+"°"],
+      ["斜边 $AB$", fmt(ab)],
+      ["对30°边 $BC$", fmt(bc)+" ≈ AB/2="+fmt(ab/2)],
+      ["对60°边 $AC$", fmt(ca)+" ≈ AB·√3/2="+fmt(ab*Math.sqrt(3)/2)]
+    ]);
+    // handle at B to change scale
+    circle(svg,B,9,{cls:"handle",id:"B",fill:"#0d6758"});
+    circle(svg,A,6,{fill:"#8a5314"}); circle(svg,C,6,{fill:"#8a5314"});
+  }
+
+  if(mod.id==="rt4545"){
+    buildRt4545();
+    const {A,B,C}=st;
+    poly(svg,[A,B,C],{fill:"rgba(138,83,20,.08)",stroke:"#8a5314"});
+    line(svg,A,B,{stroke:"#0d6758"}); line(svg,B,C); line(svg,C,A);
+    const s=16; line(svg,{x:C.x,y:C.y-s},{x:C.x+s,y:C.y-s},{stroke:"#18212b",w:1.5}); line(svg,{x:C.x+s,y:C.y-s},{x:C.x+s,y:C.y},{stroke:"#18212b",w:1.5});
+    label(svg,A,"A"); label(svg,B,"B"); label(svg,C,"C");
+    const ab=dist(A,B), bc=dist(B,C), ca=dist(C,A);
+    metrics([
+      ["$\\angle A$", fmt(ang(C,A,B))+"°"],
+      ["$\\angle B$", fmt(ang(A,B,C))+"°"],
+      ["直角边 $AC$", fmt(ca)],
+      ["直角边 $BC$", fmt(bc)],
+      ["斜边 $AB$", fmt(ab)+" ≈ AC·√2="+fmt(ca*Math.sqrt(2))]
+    ]);
+    circle(svg,A,9,{cls:"handle",id:"A",fill:"#0d6758"});
+    circle(svg,B,6,{fill:"#8a5314"}); circle(svg,C,6,{fill:"#8a5314"});
+  }
+
+  if(mod.id==="rotation"){
+    const E=st.E, F=st.F;
+    const G=rotate(F,E,st.deg); // positive deg = clockwise on screen
+    // rays
+    line(svg,E,F,{stroke:"#0d6758"}); line(svg,E,G,{stroke:"#8a5314"});
+    line(svg,F,G,{dash:"5 4",stroke:"#2a4d7a",w:2});
+    // angle control point on circle
+    const Rpt=rotate({x:E.x+70,y:E.y},E,st.deg*0.5);
+    // arc showing rotation
+    const arc=document.createElementNS("http://www.w3.org/2000/svg","path");
+    const r=54;
+    const a0=Math.atan2(F.y-E.y,F.x-E.x);
+    const a1=a0+st.deg*Math.PI/180;
+    const p0={x:E.x+r*Math.cos(a0),y:E.y+r*Math.sin(a0)};
+    const p1={x:E.x+r*Math.cos(a1),y:E.y+r*Math.sin(a1)};
+    const large=Math.abs(st.deg)>180?1:0;
+    arc.setAttribute("d",`M ${p0.x} ${p0.y} A ${r} ${r} 0 ${large} 1 ${p1.x} ${p1.y}`);
+    arc.setAttribute("fill","none"); arc.setAttribute("stroke","#8a5314"); arc.setAttribute("stroke-width","2.5");
+    svg.appendChild(arc);
+    label(svg,E,"E"); label(svg,F,"F"); label(svg,G,"G");
+    metrics([
+      ["旋转角", fmt(st.deg,0)+"°"],
+      ["$EF$", fmt(dist(E,F))],
+      ["$EG$", fmt(dist(E,G))],
+      ["$|EF-EG|$", fmt(Math.abs(dist(E,F)-dist(E,G)))],
+      ["$\\angle FEG$", fmt(ang(F,E,G))+"°"]
+    ]);
+    circle(svg,E,6,{fill:"#8a5314"});
+    circle(svg,F,9,{cls:"handle",id:"F",fill:"#0d6758"});
+    circle(svg,G,6,{fill:"#8a5314"});
+    circle(svg,Rpt,9,{cls:"handle",id:"R",fill:"#2a4d7a"});
+    label(svg,Rpt,"角",14);
+  }
+
+  if(mod.id==="rot180"){
+    const {T,A}=st;
+    const Ap=rotate(A,T,180);
+    line(svg,A,Ap,{stroke:"#2a4d7a",dash:"6 4",w:2});
+    line(svg,T,A,{stroke:"#0d6758"}); line(svg,T,Ap,{stroke:"#8a5314"});
+    // another point B for illustration
+    label(svg,T,"T"); label(svg,A,"A"); label(svg,Ap,"A'");
+    const M=mid(A,Ap);
+    metrics([
+      ["$TA$", fmt(dist(T,A))],
+      ["$TA'$", fmt(dist(T,Ap))],
+      ["$T$ 是否为 $AA'$ 中点", dist(M,T)<1.5 ? "是" : "否"],
+      ["旋转角", "180°"]
+    ]);
+    circle(svg,T,7,{fill:"#8a5314"});
+    circle(svg,A,9,{cls:"handle",id:"A",fill:"#0d6758"});
+    circle(svg,Ap,7,{fill:"#2a4d7a"});
+  }
+
+  if(mod.id==="mid-perp"){
+    const {A,E,T}=st;
+    line(svg,A,E,{stroke:"#0d6758",w:3});
+    const O=mid(A,E);
+    // foot of perpendicular from T to AE
+    const ax=E.x-A.x, ay=E.y-A.y;
+    const t=((T.x-A.x)*ax+(T.y-A.y)*ay)/(ax*ax+ay*ay);
+    const F={x:A.x+t*ax, y:A.y+t*ay};
+    line(svg,T,F,{stroke:"#8a5314",w:2.5});
+    line(svg,T,O,{stroke:"#2a4d7a",dash:"5 4",w:2});
+    label(svg,A,"A"); label(svg,E,"E"); label(svg,T,"T"); label(svg,O,"O中点"); label(svg,F,"H垂足",12);
+    const ao=dist(A,O), eo=dist(E,O);
+    metrics([
+      ["$AO$（到中点）", fmt(ao)],
+      ["$EO$（到中点）", fmt(eo)],
+      ["$AO=EO$？", Math.abs(ao-eo)<0.8?"是（中点定义）":"—"],
+      ["$TH$（距离）", fmt(dist(T,F))],
+      ["提示", "第23题要证的 O 使 AO=EO，即 O 为中点"]
+    ]);
+    circle(svg,A,9,{cls:"handle",id:"A",fill:"#0d6758"});
+    circle(svg,E,9,{cls:"handle",id:"E",fill:"#0d6758"});
+    circle(svg,T,9,{cls:"handle",id:"T",fill:"#0d6758"});
+    circle(svg,O,5,{fill:"#8a5314"});
+  }
+
+  stage.appendChild(svg);
+  bindHandles(svg);
+}
+
+function bindHandles(svg){
+  svg.querySelectorAll("[data-handle]").forEach(node=>{
+    node.addEventListener("pointerdown", onDown);
+  });
+}
+
+function svgPoint(evt){
+  const svg=$("stage").querySelector("svg");
+  const pt=svg.createSVGPoint();
+  pt.x=evt.clientX; pt.y=evt.clientY;
+  const ctm=svg.getScreenCTM().inverse();
+  const p=pt.matrixTransform(ctm);
+  return clamp(p);
+}
+
+function onDown(evt){
+  evt.preventDefault();
+  const id=evt.currentTarget.getAttribute("data-handle");
+  drag={id};
+  evt.currentTarget.setPointerCapture(evt.pointerId);
+  window.addEventListener("pointermove", onMove);
+  window.addEventListener("pointerup", onUp);
+}
+function onMove(evt){
+  if(!drag) return;
+  const p=svgPoint(evt);
+  const mod=currentMod();
+  if(mod.id==="rt306090" && drag.id==="B"){
+    // change scale by distance from C
+    st.scale=Math.max(80, Math.min(300, dist(p, st.C)*2)); // BC = hyp/2
+    // actually BC should be hyp/2, so hyp = 2*BC
+    st.scale=Math.max(100, Math.min(360, 2*Math.abs(st.C.y-p.y)));
+  } else if(mod.id==="rt4545" && drag.id==="A"){
+    st.leg=Math.max(60, Math.min(260, p.x-st.C.x));
+  } else if(mod.id==="rotation" && drag.id==="R"){
+    const a0=Math.atan2(st.F.y-st.E.y, st.F.x-st.E.x);
+    const a1=Math.atan2(p.y-st.E.y, p.x-st.E.x);
+    let deg=((a1-a0)*180/Math.PI);
+    // interpret as half? We placed R at deg/2 along arc — map pointer angle from F as full rotation angle
+    deg=((a1-a0)*180/Math.PI);
+    if(deg<0) deg+=360;
+    st.deg=Math.max(15, Math.min(180, deg));
+  } else if(mod.id==="rotation" && drag.id==="F"){
+    st.F=p;
+  } else if(st[drag.id]){
+    st[drag.id]=p;
+  }
+  draw();
+}
+function onUp(){
+  drag=null;
+  window.removeEventListener("pointermove", onMove);
+  window.removeEventListener("pointerup", onUp);
+}
+
+function selectMod(id){
+  modId=id;
+  const mod=currentMod();
+  st=mod.init();
+  $("modHead").innerHTML = mathify(`
+    <h2>${mod.title} <span class="pill">${mod.tag}</span></h2>
+    <p class="muted">卷面关联：${mod.exam}</p>
+    <div class="callout warn"><strong>操作：</strong>${mod.tip}</div>
+  `);
+  $("dragHint").textContent = mod.tip;
+  concept(mod);
+  document.querySelectorAll("#modNav button").forEach(b=>{
+    b.classList.toggle("primary", b.dataset.id===id);
+  });
+  draw();
+}
+
+function buildNav(){
+  const nav=$("modNav");
+  nav.innerHTML="";
+  MODULES.forEach(m=>{
+    const b=document.createElement("button");
+    b.textContent=m.title;
+    b.dataset.id=m.id;
+    b.onclick=()=>selectMod(m.id);
+    nav.appendChild(b);
+  });
+}
+
+$("btnReset").onclick=()=>selectMod(modId);
+buildNav();
+selectMod("equilateral");
+</script>
+</body>
+</html>

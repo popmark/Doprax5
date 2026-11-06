@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>二次函数教学分类 · 分块训练营</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  <script src="vendor/katex/katex.min.js"></script>
+  <style>
+    :root {
+      --ink:#18212b; --muted:#5a6573; --paper:#f3f0e8; --panel:#fffcf6;
+      --line:#d5ccbc; --teal:#0d6758; --teal-soft:#d7efe9;
+      --amber:#8a5314; --amber-soft:#f2e3cf; --rose:#8d3030; --rose-soft:#f2d8d8;
+      --green:#1d6840; --green-soft:#d8ecdf;
+      --serif:"Noto Serif SC","Songti SC",serif;
+      --sans:"Noto Sans SC","PingFang SC",sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);color:var(--ink);line-height:1.65;
+      background:radial-gradient(900px 420px at 0% 0%,#dceee8 0%,transparent 55%),radial-gradient(800px 380px at 100% 0%,#efe4d3 0%,transparent 50%),var(--paper)}
+    .wrap{max-width:1080px;margin:0 auto;padding:24px 16px 72px}
+    h1,h2,h3{font-family:var(--serif);margin:0 0 10px;font-weight:700}
+    h1{font-size:clamp(1.55rem,3.4vw,2.2rem)}
+    .lead{color:var(--muted);max-width:46rem;margin:0 0 16px}
+    button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:8px 14px}
+    button:hover{border-color:var(--teal)}
+    button.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+    button.ghost{background:transparent}
+    button:disabled{opacity:.45;cursor:not-allowed}
+    .topbar,.steps,.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+    .grid{display:grid;gap:12px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .mod{cursor:pointer;text-align:left;padding:14px}
+    .mod .tag{color:var(--muted);font-size:.88rem}
+    .pill{display:inline-block;border-radius:999px;padding:3px 10px;font-size:.82rem;background:var(--teal-soft);color:var(--teal);margin:2px}
+    .pill.warn{background:var(--amber-soft);color:var(--amber)}
+    .pill.bad{background:var(--rose-soft);color:var(--rose)}
+    .pill.ok{background:var(--green-soft);color:var(--green)}
+    .callout{border-left:4px solid var(--teal);background:var(--teal-soft);padding:10px 12px;border-radius:0 10px 10px 0;margin:10px 0}
+    .callout.warn{border-left-color:var(--amber);background:var(--amber-soft)}
+    .callout.ok{border-left-color:var(--green);background:var(--green-soft)}
+    .callout.bad{border-left-color:var(--rose);background:var(--rose-soft)}
+    .box{border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin:8px 0}
+    .options{display:grid;gap:8px;margin:10px 0}
+    .options button{text-align:left}
+    input[type=text]{width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#fff}
+    .muted{color:var(--muted)}
+    table{width:100%;border-collapse:collapse;font-size:.95rem}
+    th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+    th{color:var(--muted);font-weight:500}
+    .stat-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .stat{background:var(--teal-soft);border-radius:12px;padding:12px 14px}
+    .stat b{display:block;font-family:var(--serif);font-size:1.25rem}
+    .stat span{color:var(--muted);font-size:.9rem}
+    .score{font-family:var(--serif);font-size:1.8rem;color:var(--teal)}
+    [hidden]{display:none!important}
+    @media(max-width:760px){.grid-2,.stat-row{grid-template-columns:1fr 1fr}}
+    @media(max-width:480px){.grid-2,.stat-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>二次函数教学分类 · 分块训练营</h1>
+    <p class="lead">按「二次函数学习中的教学」五段式 + 本卷交汇/变换专题分类。含第18、19、20、23题的知识结构、逻辑链与思维方式；每块独立完成：讲解 → 训练 → 复习 → 仿卷。</p>
+    <div class="topbar" id="topbar"></div>
+  </header>
+  <main id="app"></main>
+</div>
+<script>
+const KEY="jh-course-v2";
+const UNITS=[
+{
+  id:"U1", cat:"二次函数·认识", title:"三种解析式与待定系数",
+  exams:["第19题(1)"],
+  knowledge:["一般式 $y=ax^{2}+bx+c$","顶点式 $y=a(x-h)^{2}+k$","交点式 $y=a(x-x_1)(x-x_2)$","待定系数法"],
+  logic:["先看已知点/交点/顶点，选最省事的形式","代入方程解参数","必要时化为另两种形式检验"],
+  thinking:["形式选择优先于硬算","用特殊点锁定系数"],
+  explain:{
+    title:"精讲第19题(1)",
+    stem:"抛物线 $y=-x^{2}+bx+c$ 过 $A(-1,0)$、$B(3,0)$，求解析式。",
+    steps:[
+      "已知二次项系数 $a=-1$，只需定 $b,c$。",
+      "把 $A$ 代入：$-1-b+c=0$ ⇒ $c-b=1$。",
+      "把 $B$ 代入：$-9+3b+c=0$ ⇒ $c+3b=9$。",
+      "解得 $b=2,c=3$，故 $y=-x^{2}+2x+3$。",
+      "也可用交点式：$y=-(x+1)(x-3)=-x^{2}+2x+3$。"
+    ],
+    tip:"两根已知时，交点式往往最快。"
+  },
+  drill:[
+    {id:"d1",type:"blank",stem:"过 $(-2,0)$、$(4,0)$，且 $a=1$，交点式写作？",answer:"(x+2)(x-4)",accept:["(x+2)(x-4)","y=(x+2)(x-4)","(x+2)(x-4)=0的左边"],explain:"$y=(x+2)(x-4)$。"},
+    {id:"d2",type:"blank",stem:"$y=-x^{2}+bx+c$ 过 $(1,0)$、$(-3,0)$，则 $b=$？",answer:"-2",accept:["-2","b=-2"],explain:"交点式 $y=-(x-1)(x+3)=-x^{2}-2x+3$，故 $b=-2$。"},
+    {id:"d3",type:"choice",stem:"已知顶点 $(2,-3)$、开口向上且过原点，优先用？",options:["A. 一般式硬套三点","B. 顶点式再代入原点","C. 只写交点式","D. 无法确定"],answer:"B",explain:"顶点已知 → 顶点式 $y=a(x-2)^{2}-3$，再代入 $(0,0)$ 求 $a$。"}
+  ],
+  review:["两根已知 → 交点式","顶点已知 → 顶点式","一般点列 → 一般式方程组"],
+  exam:[
+    {id:"e1",type:"blank",stem:"【仿19题】$y=x^{2}+bx+c$ 过 $A(-1,0)$、$B(5,0)$，解析式为？",answer:"x^2-4x-5",accept:["x^2-4x-5","y=x^2-4x-5","(x+1)(x-5)","y=(x+1)(x-5)"],explain:"$y=(x+1)(x-5)=x^{2}-4x-5$。"}
+  ]
+},
+{
+  id:"U2", cat:"二次函数·性质", title:"对称轴·顶点·闭区间最值",
+  exams:["第14题","第19题顶点"],
+  knowledge:["对称轴 $x=-\\dfrac{b}{2a}$","顶点最值","闭区间：顶点/端点分类","$a>0$ 与 $a<0$ 讨论"],
+  logic:["配方或对称轴公式","判断对称轴是否∈区间","开口向下：最大看顶点；开口向上：最大看更远端点","两解写全"],
+  thinking:["分类讨论是得分点","漏解=整题错"],
+  explain:{
+    title:"精讲第14题（区间最值）",
+    stem:"$y=ax^{2}+4ax+2$ 在 $-4\\leqslant x\\leqslant 1$ 有最大值 5，求 $a$。",
+    steps:[
+      "$y=a(x+2)^{2}-4a+2$，对称轴 $x=-2\\in[-4,1]$。",
+      "$a<0$：最大值在顶点 $-4a+2=5$ ⇒ $a=-\\dfrac{3}{4}$。",
+      "$a>0$：最大值在 $x=1$：$5a+2=5$ ⇒ $a=\\dfrac{3}{5}$。",
+      "答案：$a=-\\dfrac{3}{4}$ 或 $a=\\dfrac{3}{5}$。"
+    ],
+    tip:"先问开口方向，再决定看顶点还是端点。"
+  },
+  drill:[
+    {id:"d1",type:"blank",stem:"$y=ax^{2}+4ax+2$ 在 $[-4,1]$ 最大值 5，$a=$？（两解用“或”）",answer:"-3/4或3/5",accept:["-3/4或3/5","3/5或-3/4","-3/4,3/5"],explain:"开口向下 $-\\dfrac{3}{4}$；开口向上 $\\dfrac{3}{5}$。"},
+    {id:"d2",type:"blank",stem:"$y=-x^{2}+2x+m$ 在 $[0,3]$ 最大值 5，则 $m=$？",answer:"4",accept:["4","m=4"],explain:"顶点 $(1,1+m)$，$1+m=5$ ⇒ $m=4$。"},
+    {id:"d3",type:"choice",stem:"开口向上且对称轴在区间内，闭区间最大值在？",options:["A. 顶点","B. 离对称轴更远的端点","C. 任意端点","D. 无法判断"],answer:"B",explain:"开口向上顶点是最小值。"}
+  ],
+  review:["对称轴在不在区间内","开口决定最大/最小位置","参数题两解写全"],
+  exam:[
+    {id:"e1",type:"blank",stem:"【仿14题】$y=ax^{2}-2ax+1$ 在 $0\\leqslant x\\leqslant 3$ 有最小值 $-2$，则 $a=$？（只考虑 $a>0$）",answer:"3",accept:["3","a=3"],explain:"对称轴 $x=1$，开口向上最小值在顶点：$-a+1=-2$ ⇒ $a=3$。"}
+  ]
+},
+{
+  id:"U3", cat:"二次函数·方程不等式", title:"交点与看图比较",
+  exams:["第20题(2)同类"],
+  knowledge:["联立求交点","不等式 ⇔ 图像上下位置","定义域限制"],
+  logic:["先求交点横坐标","结合图像分支判断区间","写出开区间"],
+  thinking:["把代数不等式翻译成“谁在上面”"],
+  explain:{
+    title:"衔接第20题看图不等式",
+    stem:"当 $\\dfrac{1}{2}x+b>\\dfrac{k}{x}$（$x<0$）时求范围，需先求交点再看图。",
+    steps:[
+      "第20题中交点为 $A(-1,2)$、$B(-4,-1)$（示意）。",
+      "在 $x<0$ 上，两交点之间直线在双曲线上方。",
+      "故 $-4<x<-1$。"
+    ],
+    tip:"学生易写成 $x>-\\dfrac{3}{4}$，是忽略了另一交点与定义域。"
+  },
+  drill:[
+    {id:"d1",type:"choice",stem:"解“直线在双曲线上方”时，第一步通常是？",options:["A. 直接猜区间","B. 先求交点再看图","C. 只比较截距","D. 配方"],answer:"B",explain:"交点是分界点。"},
+    {id:"d2",type:"blank",stem:"若交点横坐标为 $-4$ 与 $-1$，且在其间直线在上方（$x<0$），则不等式范围？",answer:"-4<x<-1",accept:["-4<x<-1","(-4,-1)"],explain:"开区间 $(-4,-1)$。"},
+    {id:"d3",type:"choice",stem:"反比例 $x<0$ 时，比较一次与反比例，能否用 $x>0$ 的结论？",options:["A. 能","B. 不能，必须分支讨论","C. 只要交点相同就行","D. 随意"],answer:"B",explain:"两支性质与位置不同。"}
+  ],
+  review:["交点=分界","图像语言","定义域"],
+  exam:[
+    {id:"e1",type:"blank",stem:"【仿20题】交点 $x=-3,-1$，且 $-3<x<-1$ 时一次 $> $ 反比例，写出范围。",answer:"-3<x<-1",accept:["-3<x<-1","(-3,-1)"],explain:"直接取两交点之间。"}
+  ]
+},
+{
+  id:"U4", cat:"二次函数·应用", title:"实际问题：顶点最值",
+  exams:["第22题"],
+  knowledge:["利润=（单价-成本）×数量","二次函数顶点","定值解方程 vs 最值对称轴"],
+  logic:["设提价 $m$ 写 $W(m)$","问‘等于某值’→解方程","问‘最大’→对称轴","回代成实际量"],
+  thinking:["审题关键词决定方法"],
+  explain:{
+    title:"精讲第22题最值",
+    stem:"提价 $m$ 元，入住 $50-\\dfrac{m}{10}$，成本 20，何时利润最大？",
+    steps:[
+      "$W=(160+m)\\left(50-\\dfrac{m}{10}\\right)=-\\dfrac{1}{10}m^{2}+34m+8000$。",
+      "对称轴 $m=170$，房价 $350$ 元。"
+    ],
+    tip:"不要把 $W=8640$ 的根当成最大。"
+  },
+  drill:[
+    {id:"d1",type:"blank",stem:"$W=-\\dfrac{1}{10}m^{2}+34m+8000$，最大时 $m=$？",answer:"170",accept:["170","m=170"],explain:"$m=-b/(2a)=170$。"},
+    {id:"d2",type:"choice",stem:"“利润刚好8640”该用？",options:["A. 对称轴","B. 解方程","C. 配方看开口即可","D. 随便"],answer:"B",explain:"定值→方程。"},
+    {id:"d3",type:"blank",stem:"原价180，提价170，定价？",answer:"350",accept:["350","350元"],explain:"$180+170=350$。"}
+  ],
+  review:["建模","定值/最值分流","答房价"],
+  exam:[
+    {id:"e1",type:"blank",stem:"【仿22题】$W=-\\dfrac{1}{10}m^{2}+30m+7000$，最大时 $m=$？",answer:"150",accept:["150","m=150"],explain:"$m=30/(1/5)=150$。"}
+  ]
+},
+{
+  id:"U5", cat:"二次函数·几何量", title:"截距·中点·距离",
+  exams:["第19题(2)"],
+  knowledge:["$y$ 截距","顶点公式","中点 $\\left(\\dfrac{x_1+x_2}{2},\\dfrac{y_1+y_2}{2}\\right)$","距离 $\\sqrt{(x_1-x_2)^{2}+(y_1-y_2)^{2}}$"],
+  logic:["解析式 → 关键点坐标 → 中点 → 距离","保持运算顺序，减少跳步"],
+  thinking:["坐标几何流水线","先算点再算线"],
+  explain:{
+    title:"精讲第19题(2)",
+    stem:"$y=-x^{2}+2x+3$，连接 $BC,CD,BD$，$P$ 为 $BD$ 中点，求 $CP$。",
+    steps:[
+      "$C(0,3)$；顶点 $D(1,4)$；$B(3,0)$。",
+      "$P=\\left(\\dfrac{3+1}{2},\\dfrac{0+4}{2}\\right)=(2,2)$。",
+      "$CP=\\sqrt{(2-0)^{2}+(2-3)^{2}}=\\sqrt{5}$。"
+    ],
+    tip:"中点公式写错横纵坐标是高频失误。"
+  },
+  drill:[
+    {id:"d1",type:"blank",stem:"$B(3,0)$、$D(1,4)$ 的中点坐标？写成(x,y)",answer:"(2,2)",accept:["(2,2)","（2，2）"],explain:"$((3+1)/2,(0+4)/2)=(2,2)$。"},
+    {id:"d2",type:"blank",stem:"$C(0,3)$ 到 $P(2,2)$ 的距离？",answer:"√5",accept:["√5","\\sqrt{5}","sqrt5"],explain:"$\\sqrt{4+1}=\\sqrt{5}$。"},
+    {id:"d3",type:"blank",stem:"$y=-x^{2}+2x+3$ 的顶点纵坐标？",answer:"4",accept:["4"],explain:"$x=1$ 时 $y=4$。"}
+  ],
+  review:["点坐标齐全再求距离","中点/距离公式默写"],
+  exam:[
+    {id:"e1",type:"blank",stem:"【仿19题】$A(-2,0),B(4,0)$，$y=-(x+2)(x-4)$，顶点 $D$ 与 $B$ 中点的纵坐标？",answer:"4.5",accept:["4.5","9/2","\\dfrac{9}{2}"],explain:"$D(1,9)$，$B(4,0)$，中点 $y=4.5$。"}
+  ]
+},
+{
+  id:"U6", cat:"二次函数·综合", title:"定点·韦达·抛物线",
+  exams:["第24题"],
+  knowledge:["含参直线配方定点","联立得二次方程","韦达定理","抛物线对称"],
+  logic:["定点 → 联立 → 韦达表示交点 → 几何条件坐标化"],
+  thinking:["会定点只是第1步，必须继续联立"],
+  explain:{
+    title:"精讲第24题入口",
+    stem:"$y=kx-k-1$ 与 $y=x^{2}-2x-3$ 交于 $A,B$。",
+    steps:[
+      "$y+1=k(x-1)$ ⇒ 定点 $(1,-1)$。",
+      "联立后用韦达，再代入 $AG=AF$ 等条件。"
+    ],
+    tip:"空白失分多因停在定点。"
+  },
+  drill:[
+    {id:"d1",type:"blank",stem:"$y=k(x-2)+3$ 定点？",answer:"(2,3)",accept:["(2,3)"],explain:"$(2,3)$。"},
+    {id:"d2",type:"blank",stem:"$y=2kx-4k+1$ 定点？",answer:"(2,1)",accept:["(2,1)"],explain:"$y-1=2k(x-2)$。"},
+    {id:"d3",type:"choice",stem:"定点后下一步？",options:["A. 放弃","B. 联立抛物线并用韦达","C. 只画图","D. 只求顶点"],answer:"B",explain:"联立是综合题入口。"}
+  ],
+  review:["配方定点","联立韦达","条件坐标化"],
+  exam:[
+    {id:"e1",type:"blank",stem:"【仿24题】$y=k(x+1)-2$ 定点？",answer:"(-1,-2)",accept:["(-1,-2)","（-1，-2）"],explain:"$(-1,-2)$。"}
+  ]
+},
+{
+  id:"U7", cat:"函数交汇", title:"一次与反比例",
+  exams:["第5题","第15题","第20题"],
+  knowledge:["反比例象限与分区间增减","$k$ 的面积意义","一次与反比例交点求参","看图不等式"],
+  logic:["第5：验证选项找不正确","第15：面积×比例链","第20：代入求 $b,k$ 再比较"],
+  thinking:["性质题抓表述陷阱","面积题检查是否少乘","交汇题先求参"],
+  explain:{
+    title:"精讲第20题(1)+第5/15要点",
+    stem:"$y=\\dfrac{1}{2}x+b$ 与 $y=\\dfrac{k}{x}(x<0)$ 交于 $A(-1,2)$。",
+    steps:[
+      "$k=(-1)\\cdot 2=-2$；$b=2-\\dfrac{1}{2}(-1)=\\dfrac{5}{2}$。",
+      "第5题：$y=-\\dfrac{3}{x}$ 的增减性必须分区间。",
+      "第15题：$k$ 面积意义 + 比例，27 要再 ×2 得 54。"
+    ],
+    tip:"第20题第(2)问正确范围是 $-4<x<-1$。"
+  },
+  drill:[
+    {id:"d1",type:"choice",stem:"$y=2/x$ 错误的是？",options:["A. 一、三象限","B. $(0,+\\infty)$ 上递减","C. 不限区间地说整体递减","D. 关于原点对称"],answer:"C",explain:"不能跨象限谈整体递减。"},
+    {id:"d2",type:"blank",stem:"第一象限矩形面积12，则 $k=$？",answer:"12",accept:["12"],explain:"面积=$k$。"},
+    {id:"d3",type:"blank",stem:"$A(-1,2)$ 在 $y=k/x$ 上，$k=$？",answer:"-2",accept:["-2"],explain:"$k=-2$。"}
+  ],
+  review:["增减性分区间","面积=$|k|$","先求参再比较"],
+  exam:[
+    {id:"e1",type:"blank",stem:"【仿20题】点 $(-2,3)$ 在 $y=k/x$ 上，$k=$？",answer:"-6",accept:["-6"],explain:"$k=-6$。"}
+  ]
+},
+{
+  id:"U8", cat:"几何变换", title:"旋转：证明·求长·动态最值",
+  exams:["第18题","第16题","第23题"],
+  knowledge:["旋转保长保角","等边/等腰直角性质","$180^{\\circ}$ 中心对称","勾股与坐标法","特殊→一般→动态最值"],
+  logic:[
+    "第18：旋转得等边 → 角度差得直角 → 勾股求 $PB=4$",
+    "第16：建系 + 旋转矩阵求 $CG$",
+    "第23：特殊化共线证全等 → 一般证 $AO=EO$ → 旋转求 $TO$ 最值"
+  ],
+  thinking:["变换构造","角度追踪","特殊化思想","不变量"],
+  explain:{
+    title:"精讲第18题 + 第23题结构",
+    stem:"第18：等边 $\\triangle ABC$ 内点 $P$，$AP=3,CP=5,\\angle APB=150^{\\circ}$，旋转 $\\triangle ACP$ 得 $\\triangle ABD$。",
+    steps:[
+      "旋转 ⇒ $AD=AP=3$，且 $\\angle DAP=60^{\\circ}$ ⇒ $\\triangle ADP$ 等边。",
+      "$\\angle DPB=150^{\\circ}-60^{\\circ}=90^{\\circ}$，$BD=5$ ⇒ $PB=\\sqrt{25-9}=4$。",
+      "第23：先共线特殊化用 $180^{\\circ}$ 旋转证全等，再一般化证 $AO=EO$，最后动态最值。"
+    ],
+    tip:"第18题关键是‘旋转角=60°’与‘150°-60°=90°’。"
+  },
+  drill:[
+    {id:"d1",type:"blank",stem:"第18题结论：$PB=$？",answer:"4",accept:["4"],explain:"直角边，$\\sqrt{25-9}=4$。"},
+    {id:"d2",type:"choice",stem:"F绕E旋转180°得G，一定正确？",options:["A. EG=2EF","B. E是FG中点且EG=EF","C. ∠FEG=90°","D. FG⊥EF"],answer:"B",explain:"180°旋转中心为中点。"},
+    {id:"d3",type:"choice",stem:"第23题探究顺序体现的思维是？",options:["A. 只算数字","B. 特殊→一般→拓展","C. 随机尝试","D. 只记结论"],answer:"B",explain:"问题提出—特殊化—一般化—拓展最值。"}
+  ],
+  review:["旋转性质默写","角度差构造直角","特殊化再一般化"],
+  exam:[
+    {id:"e1",type:"blank",stem:"【仿18题】等边△中，旋转后得等边△ADP，$\\angle APB=150^{\\circ}$，则 $\\angle DPB=$？",answer:"90",accept:["90","90°","90^{\\circ}"],explain:"$150^{\\circ}-60^{\\circ}=90^{\\circ}$。"},
+    {id:"e2",type:"blank",stem:"【仿18题】若 $BD=13$，$PD=5$，且 $\\angle DPB=90^{\\circ}$，则 $PB=$？",answer:"12",accept:["12"],explain:"勾股：$\\sqrt{169-25}=12$。"}
+  ]
+}
+];
+
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch{return{}}}
+function save(s){localStorage.setItem(KEY,JSON.stringify(s))}
+let state=Object.assign({view:"home",unitId:null,stage:"map",answers:{},checked:{}},load());
+function persist(){save({view:state.view,unitId:state.unitId,stage:state.stage,answers:state.answers,checked:state.checked})}
+
+function norm(s){return String(s||"").replace(/\s+/g,"").replace(/／/g,"/").replace(/，/g,",").replace(/（/g,"(").replace(/）/g,")").replace(/°/g,"").toLowerCase()}
+function isCorrect(q,raw){const n=norm(raw);if(!n)return false;return [q.answer,...(q.accept||[])].map(norm).some(k=>k===n)}
+function mathify(s){
+  if(s==null)return"";s=String(s);if(!window.katex)return s;
+  const r=(tex,d)=>{try{return katex.renderToString(tex,{displayMode:!!d,throwOnError:false,strict:"ignore"})}catch{return tex}};
+  s=s.replace(/\$\$([\s\S]+?)\$\$/g,(_,t)=>r(t,true));
+  s=s.replace(/\$([^$]+?)\$/g,(_,t)=>r(t,false));
+  return s;
+}
+function el(html){const t=document.createElement("template");t.innerHTML=mathify(html).trim();return t.content.firstElementChild}
+function unitScore(u){
+  const qs=[...u.drill,...u.exam];let ok=0,done=0;
+  qs.forEach(q=>{const k=u.id+":"+q.id;if(state.checked[k]){done++;if(isCorrect(q,state.answers[k]))ok++}});
+  return{ok,done,total:qs.length,finished:done===qs.length&&done>0};
+}
+function setView(v,uid,stage){state.view=v;if(uid!==undefined)state.unitId=uid;if(stage!==undefined)state.stage=stage;persist();render()}
+
+function renderTop(){
+  const bar=document.getElementById("topbar");bar.innerHTML="";
+  const mk=(lab,v,extra)=>{const b=el(`<button class="${state.view===v&&!extra?'primary':''}">${lab}</button>`);b.onclick=()=>setView(v);bar.appendChild(b)};
+  mk("分类总览","home");
+  mk("知识结构表","structure");
+  if(state.view==="unit"){const b=el(`<button class="ghost">返回单元列表</button>`);b.onclick=()=>setView("home");bar.appendChild(b)}
+  const clr=el(`<button class="ghost">清空进度</button>`);
+  clr.onclick=()=>{if(confirm("清空全部作答？")){state.answers={};state.checked={};persist();render()}};
+  bar.appendChild(clr);
+}
+
+function renderHome(){
+  const app=document.getElementById("app");app.innerHTML="";
+  let doneU=UNITS.filter(u=>unitScore(u).finished).length;
+  app.appendChild(el(`<div class="stat-row">
+    <div class="stat"><b>${doneU}/8</b><span>已测完单元</span></div>
+    <div class="stat"><b>8</b><span>教学分块</span></div>
+    <div class="stat"><b>讲解→训练→复习→仿卷</b><span>单块流程</span></div>
+    <div class="stat"><b>18·19·20·23</b><span>本轮新增题</span></div>
+  </div>`));
+  app.appendChild(el(`<div class="panel"><h2>按「二次函数学习中的教学」分类</h2>
+    <p class="muted">五段式（认识→性质→方程不等式→应用→综合）+ 函数交汇 + 几何变换。每块可独立训练。</p>
+    <table><thead><tr><th>单元</th><th>分类</th><th>卷题</th><th>进度</th></tr></thead><tbody>
+    ${UNITS.map(u=>{const s=unitScore(u);return`<tr><td>${u.id} ${u.title}</td><td>${u.cat}</td><td>${u.exams.join("、")}</td><td>${s.done}/${s.total}</td></tr>`}).join("")}
+    </tbody></table></div>`));
+  const grid=el(`<div class="grid grid-2"></div>`);
+  UNITS.forEach(u=>{
+    const s=unitScore(u);
+    const card=el(`<button class="panel mod"><div class="tag">${u.id} · ${u.cat}</div><h3>${u.title}</h3>
+      <div class="muted">对应：${u.exams.join("、")}</div>
+      <div style="margin-top:8px">${u.knowledge.slice(0,2).map(k=>`<span class="pill">${k.replace(/\$/g,"")}</span>`).join("")}</div>
+      <div class="muted" style="margin-top:8px">${s.finished?"已完成训练":"讲解 → 训练 → 复习 → 仿卷"}</div></button>`);
+    card.onclick=()=>setView("unit",u.id,"map");
+    grid.appendChild(card);
+  });
+  app.appendChild(grid);
+}
+
+function renderStructure(){
+  const app=document.getElementById("app");app.innerHTML="";
+  const focus=["U1","U5","U7","U8"]; // 19,20,18,23 heavy
+  UNITS.forEach(u=>{
+    app.appendChild(el(`<div class="panel">
+      <h2>${u.id} ${u.title} <span class="pill">${u.cat}</span></h2>
+      <p class="muted">卷题：${u.exams.join("、")}</p>
+      <h3>知识结构</h3><ul>${u.knowledge.map(k=>`<li>${k}</li>`).join("")}</ul>
+      <h3>逻辑结构</h3><ol>${u.logic.map(k=>`<li>${k}</li>`).join("")}</ol>
+      <h3>思维方式</h3><ul>${u.thinking.map(k=>`<li>${k}</li>`).join("")}</ul>
+      <button class="primary" data-go="${u.id}">进入本单元训练</button>
+    </div>`));
+  });
+  app.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>setView("unit",b.getAttribute("data-go"),"map"));
+}
+
+function renderUnit(){
+  const u=UNITS.find(x=>x.id===state.unitId)||UNITS[0];
+  const app=document.getElementById("app");app.innerHTML="";
+  app.appendChild(el(`<div class="panel">
+    <div class="muted">${u.id} · ${u.cat} · ${u.exams.join("、")}</div>
+    <h2>${u.title}</h2>
+    <div class="row">${u.thinking.map(t=>`<span class="pill warn">${t}</span>`).join("")}</div>
+  </div>`));
+  const steps=el(`<div class="steps"></div>`);
+  [["map","① 结构图"],["explain","② 讲解"],["drill","③ 专项训练"],["review","④ 复习巩固"],["exam","⑤ 仿卷出题"]].forEach(([id,lab])=>{
+    const b=el(`<button class="${state.stage===id?"primary":""}">${lab}</button>`);
+    b.onclick=()=>setView("unit",u.id,id);steps.appendChild(b);
+  });
+  app.appendChild(steps);
+
+  if(state.stage==="map"){
+    app.appendChild(el(`<div class="panel">
+      <h3>本单元三层结构</h3>
+      <div class="box"><strong>知识结构</strong><ul>${u.knowledge.map(k=>`<li>${k}</li>`).join("")}</ul></div>
+      <div class="box"><strong>逻辑结构</strong><ol>${u.logic.map(k=>`<li>${k}</li>`).join("")}</ol></div>
+      <div class="box"><strong>思维方式</strong><ul>${u.thinking.map(k=>`<li>${k}</li>`).join("")}</ul></div>
+      <div class="row"><button class="primary" id="goEx">开始讲解 →</button></div>
+    </div>`));
+    app.querySelector("#goEx").onclick=()=>setView("unit",u.id,"explain");
+  }
+  if(state.stage==="explain"){
+    const e=u.explain;
+    app.appendChild(el(`<div class="panel">
+      <h3>${e.title}</h3>
+      <div class="callout warn"><strong>题干：</strong>${e.stem}</div>
+      <ol>${e.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+      <div class="callout"><strong>思维点拨：</strong>${e.tip}</div>
+      <div class="row"><button class="ghost" id="back">← 结构图</button><button class="primary" id="next">去专项训练 →</button></div>
+    </div>`));
+    app.querySelector("#back").onclick=()=>setView("unit",u.id,"map");
+    app.querySelector("#next").onclick=()=>setView("unit",u.id,"drill");
+  }
+  if(state.stage==="drill") renderQuizList(app,u,u.drill,"专项训练","review");
+  if(state.stage==="review"){
+    app.appendChild(el(`<div class="panel">
+      <h3>复习巩固 · 方法卡</h3>
+      <ul>${u.review.map(r=>`<li>${r}</li>`).join("")}</ul>
+      <div class="callout">合上笔记，用自己的话复述：本单元的<strong>知识结构</strong>、<strong>逻辑顺序</strong>、<strong>思维方式</strong>各是什么？然后进入仿卷。</div>
+      <div class="row"><button class="ghost" id="back">← 训练</button><button class="primary" id="next">仿卷出题 →</button></div>
+    </div>`));
+    app.querySelector("#back").onclick=()=>setView("unit",u.id,"drill");
+    app.querySelector("#next").onclick=()=>setView("unit",u.id,"exam");
+  }
+  if(state.stage==="exam") renderQuizList(app,u,u.exam,"仿卷训练（结合试卷题型变式）","done");
+}
+
+function renderQuizList(app,u,list,title,nextStage){
+  const wrap=el(`<div><div class="panel"><h3>${title}</h3></div></div>`);
+  list.forEach((q,idx)=>{
+    const key=u.id+":"+q.id; const val=state.answers[key]||"";
+    const done=!!state.checked[key]; const ok=done&&isCorrect(q,val); const bad=done&&!isCorrect(q,val);
+    const card=el(`<div class="panel"><div><strong>第 ${idx+1} 题</strong>
+      ${ok?'<span class="pill ok">正确</span>':''}${bad?'<span class="pill bad">再看</span>':''}</div>
+      <p>${q.stem}</p></div>`);
+    if(q.type==="choice"){
+      const opts=el(`<div class="options"></div>`);
+      q.options.forEach(opt=>{
+        const letter=opt.trim()[0];
+        const b=el(`<button class="${norm(val)===norm(letter)?"primary":""}">${opt}</button>`);
+        b.onclick=()=>{state.answers[key]=letter;persist();render()};
+        opts.appendChild(b);
+      });
+      card.appendChild(opts);
+    }else{
+      const input=el(`<input type="text" placeholder="输入答案" />`);
+      input.value=val; input.oninput=e=>{state.answers[key]=e.target.value};
+      input.onchange=()=>persist(); card.appendChild(input);
+    }
+    const row=el(`<div class="row"></div>`);
+    const sub=el(`<button class="primary">提交本题</button>`);
+    sub.onclick=()=>{if(q.type==="blank"){const inp=card.querySelector("input");state.answers[key]=inp?inp.value:state.answers[key]} state.checked[key]=true;persist();render()};
+    row.appendChild(sub); card.appendChild(row);
+    if(done) card.appendChild(el(`<div class="callout ${ok?"ok":"bad"}"><strong>${ok?"正确。":"参考："+q.answer}</strong><div>${q.explain}</div></div>`));
+    wrap.appendChild(card);
+  });
+  const s=list.reduce((acc,q)=>{const k=u.id+":"+q.id; if(state.checked[k]){acc.done++; if(isCorrect(q,state.answers[k]))acc.ok++} return acc},{ok:0,done:0});
+  const foot=el(`<div class="panel"><p>本段进度：${s.ok}/${s.done||0}（共 ${list.length} 题）</p>
+    <div class="row"><button class="primary" id="next" ${s.done===0?"disabled":""}>${nextStage==="done"?"完成本单元":"下一步 →"}</button></div></div>`);
+  foot.querySelector("#next").onclick=()=>{
+    if(nextStage==="done") setView("home");
+    else setView("unit",u.id,nextStage);
+  };
+  wrap.appendChild(foot); app.appendChild(wrap);
+}
+
+function render(){
+  renderTop();
+  if(state.view==="home") renderHome();
+  else if(state.view==="structure") renderStructure();
+  else renderUnit();
+}
+document.addEventListener("DOMContentLoaded",()=>{if(!window.katex)console.error("KaTeX missing");render()});
+</script>
+</body>
+</html>

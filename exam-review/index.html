@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  <script src="vendor/katex/katex.min.js"></script>
   <style>
     :root {
       --ink: #1c2430;
@@ -206,12 +208,12 @@
         no: "第5题",
         kind: "选择题",
         topic: "反比例函数性质（增减性）",
-        stem: "反比例函数 y=-3/x，下列说法不正确的是？A. y随x增大而增大；B. 过(1,-3)；C. 位于二、四象限；D. 关于y=x对称。",
+        stem: "反比例函数 $y=-\\dfrac{3}{x}$，下列说法不正确的是？A. $y$ 随 $x$ 增大而增大；B. 过 $(1,-3)$；C. 位于二、四象限；D. 关于 $y=x$ 对称。",
         student: "D",
         correct: "A",
         miss: "把“在每个象限内递增”误当成“整体递增”，或误判对称性。",
         feedback: [
-          "k=-3<0：图像在二、四象限；过(1,-3)；关于y=x与y=-x对称。",
+          "$k=-3<0$：图像在二、四象限；过 $(1,-3)$；关于 $y=x$ 与 $y=-x$ 对称。",
           "增减性必须限定区间：两支各自递增，但不能跨象限说整体递增。",
           "选“不正确”时，先确认正确选项，剩下的才是答案。"
         ],
@@ -222,14 +224,14 @@
         no: "第14题",
         kind: "填空题",
         topic: "二次函数闭区间最值 + 分类讨论",
-        stem: "y=ax²+4ax+2 在 -4≤x≤1 有最大值5，求a。",
+        stem: "$y=ax^{2}+4ax+2$ 在 $-4\\leqslant x\\leqslant 1$ 有最大值 5，求 $a$。",
         student: "只写出 3/5（漏解）",
-        correct: "a=-3/4 或 a=3/5",
+        correct: "$a=-\\dfrac{3}{4}$ 或 $a=\\dfrac{3}{5}$",
         miss: "只考虑开口向上端点最大，漏掉开口向下顶点最大。",
         feedback: [
-          "配方 y=a(x+2)²-4a+2，对称轴 x=-2 在区间内。",
-          "a<0：最大值在顶点 ⇒ -4a+2=5 ⇒ a=-3/4。",
-          "a>0：最大值在更远端点 x=1 ⇒ 5a+2=5 ⇒ a=3/5。",
+          "配方 $y=a(x+2)^{2}-4a+2$，对称轴 $x=-2$ 在区间内。",
+          "$a<0$：最大值在顶点 ⇒ $-4a+2=5$ ⇒ $a=-\\dfrac{3}{4}$。",
+          "$a>0$：最大值在更远端点 $x=1$ ⇒ $5a+2=5$ ⇒ $a=\\dfrac{3}{5}$。",
           "两解都要写全，漏解常整题判错。"
         ],
         method: ["顶点式", "a>0/a<0分类", "顶点 vs 端点", "回代检验"]
@@ -239,7 +241,7 @@
         no: "第15题",
         kind: "填空题",
         topic: "反比例 k 的几何意义 + 面积比",
-        stem: "平行四边形ABCD顶点A在y=k/x(x>0)上，AE=2DE，△DCE面积为9，求k。",
+        stem: "平行四边形 $ABCD$ 顶点 $A$ 在 $y=\\dfrac{k}{x}\,(x>0)$ 上，$AE=2DE$，$\\triangle DCE$ 面积为 9，求 $k$。",
         student: "27",
         correct: "54",
         miss: "面积放缩少乘了2。",
@@ -256,15 +258,15 @@
         no: "第16题",
         kind: "填空题",
         topic: "30°直角三角形 + 中点 + 旋转120°",
-        stem: "Rt△ABC中∠C=90°,∠B=30°，E为AD中点，EF⊥AD，EF绕E顺时针旋转120°得EG。BD=4,BF=6，求CG。",
-        student: "2√5",
-        correct: "6-2√3",
+        stem: "$Rt\\triangle ABC$ 中 $\\angle C=90^{\\circ}$，$\\angle B=30^{\\circ}$，$E$ 为 $AD$ 中点，$EF\\perp AD$，$EF$ 绕 $E$ 顺时针旋转 $120^{\\circ}$ 得 $EG$。$BD=4$，$BF=6$，求 $CG$。",
+        student: "$2\\sqrt{5}$",
+        correct: "$6-2\\sqrt{3}$",
         miss: "旋转后点G未精确计算，估成普通勾股型答案。",
         feedback: [
-          "先用30°-60°-90°边比处理已知线段。",
-          "中点+垂线适合建系。",
-          "旋转120°用向量/坐标旋转，保持EG=EF。",
-          "结果含√3，不是纯勾股整数型。"
+          "先用 $30^{\\circ}$-$60^{\\circ}$-$90^{\\circ}$ 边比处理已知线段。",
+          "中点 + 垂线适合建系。",
+          "旋转 $120^{\\circ}$ 用向量/坐标旋转，保持 $EG=EF$。",
+          "结果含 $\\sqrt{3}$，不是纯勾股整数型。"
         ],
         method: ["建系", "旋转矩阵", "距离公式化简"]
       },
@@ -278,9 +280,9 @@
         correct: "m=170，房价350元（若m须为10的倍数，则340与360同最大）",
         miss: "混淆“利润=8640”与“利润最大”。",
         feedback: [
-          "W=(160+m)(50-m/10)=-m²/10+34m+8000。",
-          "最值用对称轴 m=170；定值才解方程。",
-          "最终答房价=180+m。",
+          "$W=(160+m)\\left(50-\\dfrac{m}{10}\\right)=-\\dfrac{1}{10}m^{2}+34m+8000$。",
+          "最值用对称轴 $m=170$；定值才解方程。",
+          "最终答房价 $=180+m$。",
           "离散约束下比较m=160与180。"
         ],
         method: ["先建模", "最值→对称轴", "定值→方程", "回代房价"]
@@ -290,12 +292,12 @@
         no: "第24题(2)(3)",
         kind: "解答题",
         topic: "含参直线定点 + 抛物线综合",
-        stem: "y=kx-k-1 与 y=x²-2x-3 交于A,B。已会求定点；继续完成AG=AF与AC定点。",
+        stem: "$y=kx-k-1$ 与 $y=x^{2}-2x-3$ 交于 $A,B$。已会求定点；继续完成 $AG=AF$ 与 $AC$ 定点。",
         student: "只完成(1) D(1,-1)；(2)(3)空白",
         correct: "(1)D(1,-1)；后续用韦达与对称性推进",
         miss: "定点会做，综合条件不敢下手。",
         feedback: [
-          "y+1=k(x-1) ⇒ 定点(1,-1)已掌握。",
+          "$y+1=k(x-1)$ ⇒ 定点 $(1,-1)$ 已掌握。",
           "联立后用韦达表示交点横坐标。",
           "抛物线对称轴x=1，横弦关于它对称。",
           "把几何条件翻译成坐标等式再求。"
@@ -307,15 +309,15 @@
     const PRACTICE = [
       {
         id: "p1", tag: "反比例性质", related: "第5题", type: "choice",
-        stem: "关于 y=2/x，下列说法错误的是？",
-        options: ["A. 图像在第一、三象限", "B. 在(0,+∞)上 y 随 x 增大而减小", "C. y 随 x 的增大而减小（不限制区间）", "D. 图像关于原点对称"],
+        stem: "关于 $y=\\dfrac{2}{x}$，下列说法错误的是？",
+        options: ["A. 图像在第一、三象限", "B. 在 $(0,+\\infty)$ 上 $y$ 随 $x$ 增大而减小", "C. $y$ 随 $x$ 的增大而减小（不限制区间）", "D. 图像关于原点对称"],
         answer: "C", accept: ["C"],
         hint: "跨象限不能直接谈单调性。",
         explain: "A、B、D正确。C未限定区间：x从-1到1时 y从-2增到2，故C错误。"
       },
       {
         id: "p2", tag: "反比例性质", related: "第5题", type: "choice",
-        stem: "y=-5/x 在(-∞,0)上的单调性是？",
+        stem: "$y=-\\dfrac{5}{x}$ 在 $(-\\infty,0)$ 上的单调性是？",
         options: ["A. 增函数", "B. 减函数", "C. 先增后减", "D. 不能确定"],
         answer: "A", accept: ["A"],
         hint: "k<0时每一支都是增函数。",
@@ -323,36 +325,36 @@
       },
       {
         id: "p3", tag: "区间最值", related: "第14题", type: "blank",
-        stem: "y=ax²+4ax+2 在-4≤x≤1有最大值5，则a=？（两解用“或”）",
+        stem: "$y=ax^{2}+4ax+2$ 在 $-4\\leqslant x\\leqslant 1$ 有最大值 5，则 $a=$？（两解用“或”）",
         answer: "-3/4或3/5",
         accept: ["-3/4或3/5", "3/5或-3/4", "-3/4,3/5", "3/5,-3/4", "a=-3/4或a=3/5", "a=3/5或a=-3/4"],
         hint: "对称轴x=-2，按开口方向分类。",
-        explain: "a<0：顶点最大得a=-3/4；a>0：x=1处最大得a=3/5。"
+        explain: "$a<0$：顶点最大得 $a=-\\dfrac{3}{4}$；$a>0$：$x=1$ 处最大得 $a=\\dfrac{3}{5}$。"
       },
       {
         id: "p4", tag: "区间最值", related: "第14题", type: "blank",
-        stem: "y=-x²+2x+m 在0≤x≤3最大值是5，则m=？",
+        stem: "$y=-x^{2}+2x+m$ 在 $0\\leqslant x\\leqslant 3$ 最大值是 5，则 $m=$？",
         answer: "4", accept: ["4", "m=4"],
         hint: "开口向下，最大值在顶点。",
         explain: "顶点(1,1+m)，1+m=5 ⇒ m=4。"
       },
       {
         id: "p5", tag: "面积与k", related: "第15题", type: "blank",
-        stem: "点P在y=k/x(x>0)上，过P作坐标轴垂线围成矩形面积为12，则k=？",
+        stem: "点 $P$ 在 $y=\\dfrac{k}{x}\,(x>0)$ 上，过 $P$ 作坐标轴垂线围成矩形面积为 12，则 $k=$？",
         answer: "12", accept: ["12", "k=12"],
         hint: "第一象限矩形面积等于k。",
         explain: "面积=t·(k/t)=k=12。"
       },
       {
         id: "p6", tag: "面积与k", related: "第15题", type: "blank",
-        stem: "上述矩形面积的一半为9，则k=？",
+        stem: "上述矩形面积的一半为 9，则 $k=$？",
         answer: "18", accept: ["18", "k=18"],
         hint: "三角形面积常为矩形一半。",
         explain: "(1/2)k=9 ⇒ k=18。原题再经平行四边形比例到54。"
       },
       {
         id: "p7", tag: "利润模型", related: "第22题", type: "blank",
-        stem: "W=-m²/10+34m+8000，使W最大的m是？",
+        stem: "$W=-\\dfrac{1}{10}m^{2}+34m+8000$，使 $W$ 最大的 $m$ 是？",
         answer: "170", accept: ["170", "m=170"],
         hint: "对称轴 m=-b/(2a)。",
         explain: "m=-34/(2·-1/10)=170。"
@@ -366,14 +368,14 @@
       },
       {
         id: "p9", tag: "直线定点", related: "第24题", type: "blank",
-        stem: "y=k(x-2)+3 恒过的定点？写成(x,y)",
+        stem: "$y=k(x-2)+3$ 恒过的定点？写成 $(x,y)$",
         answer: "(2,3)", accept: ["(2,3)", "（2，3）", "(2, 3)"],
         hint: "令括号为0。",
         explain: "定点(2,3)。"
       },
       {
         id: "p10", tag: "直线定点", related: "第24题", type: "blank",
-        stem: "y=2kx-4k+1 的定点坐标？",
+        stem: "$y=2kx-4k+1$ 的定点坐标？",
         answer: "(2,1)", accept: ["(2,1)", "（2，1）", "(2, 1)"],
         hint: "y-1=2k(x-2)。",
         explain: "定点(2,1)。"
@@ -421,9 +423,25 @@
       return [q.answer, ...(q.accept || [])].map(norm).includes(n);
     }
 
+    function mathify(s) {
+      if (s == null) return "";
+      s = String(s);
+      if (!window.katex) return s;
+      const render = (tex, display) => {
+        try {
+          return katex.renderToString(tex, { displayMode: !!display, throwOnError: false, strict: "ignore" });
+        } catch (e) {
+          return tex;
+        }
+      };
+      s = s.replace(/\$\$([\s\S]+?)\$\$/g, (_, tex) => render(tex, true));
+      s = s.replace(/\$([^$]+?)\$/g, (_, tex) => render(tex, false));
+      return s;
+    }
+
     function el(html) {
       const t = document.createElement("template");
-      t.innerHTML = html.trim();
+      t.innerHTML = mathify(html).trim();
       return t.content.firstElementChild;
     }
 
@@ -451,10 +469,10 @@
             </thead>
             <tbody>
               <tr><td>5</td><td>反比例增减性</td><td>D</td><td>A</td><td class="prio-high">高</td></tr>
-              <tr><td>14</td><td>闭区间最值分类</td><td>漏解</td><td>-3/4 或 3/5</td><td class="prio-high">很高</td></tr>
+              <tr><td>14</td><td>闭区间最值分类</td><td>漏解</td><td>$a=-\\dfrac{3}{4}$ 或 $\\dfrac{3}{5}$</td><td class="prio-high">很高</td></tr>
               <tr><td>15</td><td>k 与面积比</td><td>27</td><td>54</td><td class="prio-high">高</td></tr>
-              <tr><td>16</td><td>旋转求长</td><td>2√5</td><td>6-2√3</td><td class="prio-mid">中</td></tr>
-              <tr><td>22②</td><td>利润顶点最值</td><td>方程根当最值</td><td>m=170 → 350元</td><td class="prio-high">很高</td></tr>
+              <tr><td>16</td><td>旋转求长</td><td>$2\\sqrt{5}$</td><td>$6-2\\sqrt{3}$</td><td class="prio-mid">中</td></tr>
+              <tr><td>22②</td><td>利润顶点最值</td><td>方程根当最值</td><td>$m=170$ → $350$ 元</td><td class="prio-high">很高</td></tr>
               <tr><td>24(2)(3)</td><td>定点进阶综合</td><td>空白</td><td>韦达+对称推进</td><td class="prio-high">很高</td></tr>
             </tbody>
           </table>

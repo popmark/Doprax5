@@ -7,9 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  <script src="vendor/katex/katex.min.js"></script>
   <style>
     :root {
       --ink: #18212b;
@@ -143,8 +142,8 @@ const MODULES = [
       stem: "反比例函数 $y=-\\dfrac{3}{x}$，下列说法不正确的是？A. $y$ 随 $x$ 增大而增大；B. 过 $(1,-3)$；C. 位于二、四象限；D. 关于 $y=x$ 对称。",
       steps: [
         "$k=-3<0$ ⇒ 图像在二、四象限，C 正确。",
-        "代入 $(1,-3)$：$ -3=-3/1$，B 正确。",
-        "$y=k/x$ 必关于 $y=x$ 对称，D 正确。",
+        "代入 $(1,-3)$：$-3=-\\dfrac{3}{1}$，B 正确。",
+        "$y=\\dfrac{k}{x}$ 必关于 $y=x$ 对称，D 正确。",
         "A 未限定区间：取 $x_1=-1,y_1=3$ 与 $x_2=1,y_2=-3$，x 增大但 y 减小，故 A 不正确。"
       ],
       tip: "遇到“不正确”题：先验证每个正确项，剩下的就是答案。"
@@ -152,21 +151,21 @@ const MODULES = [
     quiz: [
       {
         id: "q1", type: "choice",
-        stem: "关于 $y=2/x$，错误的是？",
+        stem: "关于 $y=\\dfrac{2}{x}$，错误的是？",
         options: ["A. 图像在一、三象限", "B. 在 $(0,+\\infty)$ 上递减", "C. $y$ 随 $x$ 增大而减小（不限区间）", "D. 关于原点对称"],
         answer: "C",
         explain: "C 未限定区间。跨象限时单调性结论不成立。"
       },
       {
         id: "q2", type: "choice",
-        stem: "$y=-5/x$ 在 $(-\\infty,0)$ 上是？",
+        stem: "$y=-\\dfrac{5}{x}$ 在 $(-\\infty,0)$ 上是？",
         options: ["A. 增函数", "B. 减函数", "C. 先增后减", "D. 不能谈增减"],
         answer: "A",
         explain: "$k<0$，每一支都是增函数。"
       },
       {
         id: "q3", type: "blank",
-        stem: "$y=-4/x$ 的图像位于第几象限？（填“二、四”或“一、三”）",
+        stem: "$y=-\\dfrac{4}{x}$ 的图像位于第几象限？（填“二、四”或“一、三”）",
         answer: "二、四",
         accept: ["二、四", "二四", "第2、4", "2、4", "第二、四"],
         explain: "$k=-4<0$，位于第二、四象限。"
@@ -181,33 +180,33 @@ const MODULES = [
     blurb: "对称轴是否在区间内 + 开口方向分类讨论，两解要写全。",
     goals: ["写出顶点式并找对称轴", "按 a>0 / a<0 分类", "在顶点与端点间取最值", "检验并写全所有解"],
     learn: [
-      { h: "顶点式", t: "$y=a(x-h)^2+k$，顶点 $(h,k)$，对称轴 $x=h$。" },
+      { h: "顶点式", t: "$y=a(x-h)^{2}+k$，顶点 $(h,k)$，对称轴 $x=h$。" },
       { h: "开口与最值位置", t: "开口向下（$a<0$）：最大值优先看顶点（若在区间内）。开口向上（$a>0$）：最大值在离对称轴更远的端点；最小值在顶点（若在区间内）。" },
       { h: "标准流程", t: "①配方 ②看对称轴是否∈区间 ③按开口分类 ④比较端点/顶点 ⑤回代检验。" },
       { h: "填空提醒", t: "参数题常有两解。只写一解通常整题不得分。" }
     ],
     explain: {
       title: "精讲原卷第14题",
-      stem: "$y=ax^2+4ax+2$ 在 $-4\\le x\\le 1$ 有最大值 5，求 $a$。",
+      stem: "$y=ax^{2}+4ax+2$ 在 $-4\\leqslant x\\leqslant 1$ 有最大值 5，求 $a$。",
       steps: [
-        "配方：$y=a(x+2)^2-4a+2$，对称轴 $x=-2\\in[-4,1]$。",
-        "若 $a<0$：最大值在顶点 $-4a+2=5$ ⇒ $a=-3/4$。",
-        "若 $a>0$：最大值在更远端点 $x=1$：$5a+2=5$ ⇒ $a=3/5$（此时 $y(-4)=2<5$）。",
-        "答案：$a=-3/4$ 或 $a=3/5$。"
+        "配方：$y=a(x+2)^{2}-4a+2$，对称轴 $x=-2\\in[-4,1]$。",
+        "若 $a<0$：最大值在顶点 $-4a+2=5$ ⇒ $a=-\\dfrac{3}{4}$。",
+        "若 $a>0$：最大值在更远端点 $x=1$：$5a+2=5$ ⇒ $a=\\dfrac{3}{5}$（此时 $y(-4)=2<5$）。",
+        "答案：$a=-\\dfrac{3}{4}$ 或 $a=\\dfrac{3}{5}$。"
       ],
-      tip: "漏写 $-3/4$ 是原卷典型失误：只想了开口向上的端点情形。"
+      tip: "漏写 $-\\dfrac{3}{4}$ 是原卷典型失误：只想了开口向上的端点情形。"
     },
     quiz: [
       {
         id: "q1", type: "blank",
-        stem: "原题复习：$y=ax^2+4ax+2$ 在 $[-4,1]$ 最大值为 5，$a=$？（两解用“或”）",
+        stem: "原题复习：$y=ax^{2}+4ax+2$ 在 $[-4,1]$ 最大值为 5，$a=$？（两解用“或”）",
         answer: "-3/4或3/5",
         accept: ["-3/4或3/5", "3/5或-3/4", "-3/4,3/5", "3/5,-3/4", "a=-3/4或a=3/5"],
-        explain: "开口向下得 $-3/4$，开口向上得 $3/5$。"
+        explain: "开口向下得 $-\\dfrac{3}{4}$，开口向上得 $\\dfrac{3}{5}$。"
       },
       {
         id: "q2", type: "blank",
-        stem: "$y=-x^2+2x+m$ 在 $0\\le x\\le 3$ 最大值是 5，则 $m=$？",
+        stem: "$y=-x^{2}+2x+m$ 在 $0\\leqslant x\\leqslant 3$ 最大值是 5，则 $m=$？",
         answer: "4",
         accept: ["4", "m=4"],
         explain: "对称轴 $x=1$ 在区间内，开口向下，顶点值 $1+m=5$ ⇒ $m=4$。"
@@ -229,13 +228,13 @@ const MODULES = [
     blurb: "第一象限矩形面积 = k；再叠加比例与平行四边形关系。",
     goals: ["记住 k 的面积意义", "用比例正确放缩面积", "检查是否少乘一次比例"],
     learn: [
-      { h: "核心公式", t: "点 $P(t,k/t)$（$t>0$）向两轴作垂线，矩形面积 $t\\cdot(k/t)=k$。" },
-      { h: "三角形", t: "该矩形被对角线分成的直角三角形面积常为 $k/2$。" },
+      { h: "核心公式", t: "点 $P\\!\\left(t,\\dfrac{k}{t}\\right)$（$t>0$）向两轴作垂线，矩形面积 $t\\cdot\\dfrac{k}{t}=k$。" },
+      { h: "三角形", t: "该矩形被对角线分成的直角三角形面积常为 $\\dfrac{k}{2}$。" },
       { h: "比例链", t: "若还有 $AE=2DE$ 或平行四边形，面积往往再 ×2 或 ×某个整数。算到中间量后要问：还缺哪一步？" }
     ],
     explain: {
       title: "精讲原卷第15题",
-      stem: "平行四边形 $ABCD$ 顶点 $A$ 在 $y=k/x\\,(x>0)$ 上，$AE=2DE$，$\\triangle DCE$ 面积为 9，求 $k$。",
+      stem: "平行四边形 $ABCD$ 顶点 $A$ 在 $y=\\dfrac{k}{x}\\,(x>0)$ 上，$AE=2DE$，$\\triangle DCE$ 面积为 9，求 $k$。",
       steps: [
         "先用反比例的面积意义建立与 $k$ 相关的矩形/三角形面积。",
         "$AE=2DE$ ⇒ 相关线段比 2:1，面积随之按比例放大。",
@@ -255,7 +254,7 @@ const MODULES = [
         id: "q2", type: "blank",
         stem: "上述矩形面积的一半为 9，则 $k=$？",
         answer: "18", accept: ["18", "k=18"],
-        explain: "$(1/2)k=9$ ⇒ $k=18$。原题再经比例到 54。"
+        explain: "$\\dfrac{1}{2}k=9$ ⇒ $k=18$。原题再经比例到 54。"
       },
       {
         id: "q3", type: "choice",
@@ -276,7 +275,7 @@ const MODULES = [
     learn: [
       { h: "30°-60°-90°", t: "边比为 $1:\\sqrt{3}:2$。" },
       { h: "旋转性质", t: "对应点到旋转中心距离相等；旋转角等于定向角。180° 时三点共线且中心为中点。" },
-      { h: "120° 旋转", t: "向量 $(x,y)$ 顺时针 120°：可用复数乘 $e^{-i 2\\pi/3}$，或旋转矩阵。结果常含 $\\sqrt{3}$。" },
+      { h: "120° 旋转", t: "向量 $(x,y)$ 顺时针 120°：可用复数乘 $e^{-\\mathrm{i}\\frac{2\\pi}{3}}$，或旋转矩阵。结果常含 $\\sqrt{3}$。" },
       { h: "策略", t: "复杂求长优先建系，不要凭感觉套勾股。" }
     ],
     explain: {
@@ -307,7 +306,7 @@ const MODULES = [
       },
       {
         id: "q3", type: "blank",
-        stem: "原题答案回顾：$CG=$？（可写 6-2√3）",
+        stem: "原题答案回顾：$CG=$？（可写 $6-2\\sqrt{3}$）",
         answer: "6-2√3",
         accept: ["6-2√3", "6-2\\sqrt{3}", "6-2sqrt3"],
         explain: "原卷正解 $6-2\\sqrt{3}$。"
@@ -324,15 +323,15 @@ const MODULES = [
     learn: [
       { h: "建模模板", t: "数量随提价线性变化，单价=原价+提价，利润=(单价-成本)×数量，得到二次函数。" },
       { h: "定值问法", t: "“利润为 8640” ⇒ 令 $W=8640$ 解方程。" },
-      { h: "最值问法", t: "“利润最大” ⇒ 开口向下时取对称轴 $m=-b/(2a)$。" },
+      { h: "最值问法", t: "“利润最大” ⇒ 开口向下时取对称轴 $m=-\\dfrac{b}{2a}$。" },
       { h: "收尾", t: "题目问的是房价还是提价？别只答 $m$。" }
     ],
     explain: {
       title: "精讲原卷第22题(2)②",
       stem: "50 间房，180 元住满；每涨 10 元空 1 间；成本 20 元/间。何时利润最大？",
       steps: [
-        "入住 $50-m/10$，利润 $W=(160+m)(50-m/10)=-m^2/10+34m+8000$。",
-        "对称轴 $m=-34/(2\\cdot(-1/10))=170$。",
+        "入住 $50-\\dfrac{m}{10}$，利润 $W=(160+m)\\left(50-\\dfrac{m}{10}\\right)=-\\dfrac{1}{10}m^{2}+34m+8000$。",
+        "对称轴 $m=-\\dfrac{34}{2\\cdot\\left(-\\dfrac{1}{10}\\right)}=170$。",
         "房价 $180+170=350$ 元。",
         "若强制 $m$ 为 10 的倍数，再比较 $m=160$ 与 $180$。"
       ],
@@ -341,7 +340,7 @@ const MODULES = [
     quiz: [
       {
         id: "q1", type: "blank",
-        stem: "$W=-m^2/10+34m+8000$，使 W 最大的 m 是？",
+        stem: "$W=-\\dfrac{1}{10}m^{2}+34m+8000$，使 W 最大的 m 是？",
         answer: "170", accept: ["170", "m=170"],
         explain: "对称轴 $m=170$。"
       },
@@ -370,12 +369,12 @@ const MODULES = [
     learn: [
       { h: "定点套路", t: "$y-y_0=k(x-x_0)$ 形式 ⇒ 恒过 $(x_0,y_0)$。" },
       { h: "联立", t: "直线代入抛物线得二次方程，韦达定理表示两交点横坐标之和/积。" },
-      { h: "对称", t: "抛物线 $y=x^2-2x-3$ 对称轴 $x=1$；横弦关于对称轴对称。" },
+      { h: "对称", t: "抛物线 $y=x^{2}-2x-3$ 对称轴 $x=1$；横弦关于对称轴对称。" },
       { h: "推进策略", t: "第(1)问定点会做后，立刻写联立方程，不要停在“已经会一点”。" }
     ],
     explain: {
       title: "精讲原卷第24题",
-      stem: "直线 $y=kx-k-1$ 与抛物线 $y=x^2-2x-3$ 交于 A,B。",
+      stem: "直线 $y=kx-k-1$ 与抛物线 $y=x^{2}-2x-3$ 交于 A,B。",
       steps: [
         "(1) $y+1=k(x-1)$ ⇒ 定点 $D(1,-1)$（已掌握）。",
         "联立：$x^2-(2+k)x+(k-2)=0$，用韦达表示 $x_A+x_B$、$x_Ax_B$。",
@@ -479,23 +478,30 @@ function overall() {
   return { ok, done, total, modulesDone: MODULES.filter((m) => moduleScore(m).finished).length };
 }
 
-function renderMath(root) {
-  if (window.renderMathInElement) {
-    renderMathInElement(root, {
-      delimiters: [
-        { left: "$$", right: "$$", display: true },
-        { left: "$", right: "$", display: false }
-      ],
-      throwOnError: false
-    });
-  }
+function mathify(s) {
+  if (s == null) return "";
+  s = String(s);
+  if (!window.katex) return s;
+  const render = (tex, display) => {
+    try {
+      return katex.renderToString(tex, { displayMode: !!display, throwOnError: false, strict: "ignore" });
+    } catch (e) {
+      return tex;
+    }
+  };
+  // display then inline
+  s = s.replace(/\$\$([\s\S]+?)\$\$/g, (_, tex) => render(tex, true));
+  s = s.replace(/\$([^$]+?)\$/g, (_, tex) => render(tex, false));
+  return s;
 }
 
 function el(html) {
   const t = document.createElement("template");
-  t.innerHTML = html.trim();
+  t.innerHTML = mathify(html).trim();
   return t.content.firstElementChild;
 }
+
+function renderMath() { /* math already rendered via mathify/el */ }
 
 function setView(view, moduleId, stage) {
   state.view = view;
@@ -842,10 +848,10 @@ function render() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // wait katex auto-render
-  const boot = () => render();
-  if (window.renderMathInElement) boot();
-  else setTimeout(boot, 200);
+  if (!window.katex) {
+    console.error("KaTeX failed to load from vendor/katex/");
+  }
+  render();
 });
 </script>
 </body>
